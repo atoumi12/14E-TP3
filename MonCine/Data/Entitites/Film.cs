@@ -44,6 +44,15 @@ namespace MonCine.Data
             NbProjection = 0;
         }
 
+        /// <summary>
+        /// Constructeur permettant de forcer une génération d'id unique.
+        /// </summary>
+        /// <param name="genID"></param>
+        /// <param name="pName"></param>
+        /// <param name="pCategories"></param>
+        /// <param name="pActeurs"></param>
+        /// <param name="pRealisateurs"></param>
+        /// <param name="pSurAffiche"></param>
         public Film(bool genID, string pName, List<Categorie> pCategories = null, List<Acteur> pActeurs = null,
             List<Realisateur> pRealisateurs = null, bool pSurAffiche = false)
         {
