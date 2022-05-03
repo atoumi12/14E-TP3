@@ -3,7 +3,7 @@ name: "TEST--CI/CD workflow TP2" #nom du workflow
 on: #déclencheur du workflow
   push: #on déclanche à chaque push
     tags:
-      - "TP2-v*" #contenant le tag 'TP2-V....'   EX: je push une modification avec le tag 'TP2-V1.0.0' ce flow sera activé automatiquement
+      - "TP3-v*" #contenant le tag 'TP3-V....'   EX: je push une modification avec le tag 'TP2-V1.0.0' ce flow sera activé automatiquement
 
 env:
   PROJECT_PATH: MonCine/MonCine.csproj #variable d'environnement du workflow (path vers le projet)

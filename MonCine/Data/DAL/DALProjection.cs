@@ -46,6 +46,7 @@ namespace MonCine.Data
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 throw;
+
             }
         }
         /// <summary>
