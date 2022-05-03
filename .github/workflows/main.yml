@@ -1,0 +1,54 @@
+name: "TEST--CI/CD workflow TP2" #nom du workflow
+
+on: #déclencheur du workflow
+  push: #on déclanche à chaque push
+    tags:
+      - "TP2-v*" #contenant le tag 'TP2-V....'   EX: je push une modification avec le tag 'TP2-V1.0.0' ce flow sera activé automatiquement
+
+env:
+  PROJECT_PATH: MonCine/MonCine.csproj #variable d'environnement du workflow (path vers le projet)
+  TEST_PROJECT_PATH: MonCineTests/MonCineTests.csproj
+
+jobs: #liste des actions qui seront déclenchées par le workflow
+  deploy: #nom de l'action
+    runs-on: windows-latest #version de la machine virtuelle qui exécute la job
+    steps:
+
+      - uses: actions/checkout@v2 #action qui checkout votre code (git checkout) 
+
+      - uses: actions/setup-dotnet@v1 #action qui installe .NET sur la machine virtuelle
+        with:
+          dotnet-version: 3.1.x  #mettre la version .NET de votre projet WPF 
+          
+      - name: Dependances
+        run: dotnet restore ${{ env.PROJECT_PATH }} #restaure les dépendances du projet
+      
+      - name: Build      
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore #build le projet
+        
+      # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      # Execute all unit tests in the solution
+      - name: Execute unit tests
+        run: dotnet test
+        
+      - name: Publish
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+
+      #crée une 'release' sur votre repo github 
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          
+      #pousse l'exécutable dans la 'release' github créée précédament
+      - uses: csexton/release-asset-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: MonCine/bin/Release/netcoreapp3.1/win-x64/publish/*.exe #path vers votre exécutable
+          release-url: ${{ steps.create_release.outputs.upload_url }}

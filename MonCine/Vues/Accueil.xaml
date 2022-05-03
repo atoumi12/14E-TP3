@@ -1,0 +1,38 @@
+﻿<Page x:Class="MonCine.Vues.Accueil"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MonCine.Vues"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Accueil">
+
+    <Grid ShowGridLines="False" Background="AliceBlue" Margin="0,0,0,-6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Grid.Column="0" Source="/Ressources/Images/Logo.png"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="Mon ciné" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontFamily="MV Boli" FontSize="36" FontWeight="Bold"/>
+        <Border Grid.Row="1" Grid.Column="1" BorderThickness="2,2,2,2" Height="280" Opacity="0.3" Margin="50,0,50,0">
+            <Border.Background>
+                <ImageBrush ImageSource="/Ressources/Images/sallecinema.jpg" />
+            </Border.Background>
+        </Border>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,0" Height="300">
+            <Button Content="Consulter les abonnées" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,25,150,25" Click="Button_Click" Height="30"/>
+            <Button Content="Gestion des projections" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Click="Button_Click_1" Height="30"/>
+            <Button x:Name="BtnFilm" Content="Gestion des films" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Click="BtnFilm_Click" Height="30"/>
+            <Button x:Name="BtnAffiche" Content="Gestion de l'affiche" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Height="30" Click="BtnAffiche_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Ressources\Images\back_arrow.png" />
+    <None Remove="Ressources\Images\Logo.png" />
+    <None Remove="Ressources\Images\sallecinema.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="2.15.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.13.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Ressources\Images\back_arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Ressources\Images\Logo.png" />
+    <Resource Include="Ressources\Images\sallecinema.jpg" />
+  </ItemGroup>
+
+</Project>

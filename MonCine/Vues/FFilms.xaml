@@ -1,0 +1,150 @@
+﻿<Page x:Class="MonCine.Vues.FFilms"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:MonCine.Vues"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Films" FontSize="25">
+
+
+    <Grid ShowGridLines="False" Background="AliceBlue" Margin="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+                
+
+            <ColumnDefinition Width="25" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="450" />
+            <RowDefinition Height="50" />
+
+
+            <RowDefinition Height="50" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+
+        <Image x:Name="BtnReturn" Grid.Row="1" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="30"
+               Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown" />
+
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,5,0,0"
+                   Text="Liste des films" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" />
+
+        <ListView x:Name="LstFilms" Grid.Row="2" Grid.Column="1"
+                  SelectionChanged="LstFilms_SelectionChanged" Margin="0,0,10,0" FontSize="18" SelectionMode="Multiple" >
+        </ListView>
+
+        <!-- Details d'un film -->
+        <GroupBox Grid.Row="2" Grid.Column="2"
+                  Margin="3" Header="Information d'un film" FontSize="15" Height="500">
+            <StackPanel Orientation="Vertical" Margin="0,10,0,0" >
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock  Text="Nom : " FontWeight="DemiBold" Width="250" FontSize="18" Margin="0,0,0,20"/>
+                    <TextBox x:Name="NameField"  Width="250"  Margin="0,0,0,20"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock  Text="Toutes les catégorie(s) : " FontWeight="DemiBold" Width="250" FontSize="15"  Margin="0,0,0,5"/>
+                    <TextBlock  Text="catégorie(s) dans le film: " FontWeight="DemiBold" Width="250" FontSize="15" Margin="0,0,0,5"/>
+                    <StackPanel x:Name="CategoryStackPanel"
+                                Margin="5"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <ListView x:Name="LstCategories" 
+                          SelectionChanged="LstCategorie_SelectionChanged" Margin="0,0,10,20" FontSize="13" Height="60" Width="240" >
+                    </ListView>
+                    <ListView x:Name="LstCategorieInTheMovie" 
+                          SelectionChanged="LstCategorieInTheMovie_SelectionChanged" Margin="0,0,10,20" FontSize="13" Height="60" Width="240">
+                    </ListView>
+                    <StackPanel x:Name="LstCategorieStackPanel"
+                                Margin="0,5,0,0"/>
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="Tout les acteur(s) : " FontWeight="DemiBold" Width="250" FontSize="15" Margin="0,0,0,5"/>
+                    <TextBlock Text="Acteur(s) dans le film: " FontWeight="DemiBold" Width="250" FontSize="15" Margin="0,0,0,5"/>
+
+                    <StackPanel x:Name="ActeurStackPanel"
+                                Margin="0,5,0,0"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <ListView x:Name="LstActeurs" 
+                          SelectionChanged="LstActeurs_SelectionChanged" Margin="0,0,10,20" FontSize="13" Height="60" Width="240">
+                    </ListView>
+                    <ListView x:Name="LstActeursInTheMovie" 
+                          SelectionChanged="LstActeursInTheMovie_SelectionChanged" Margin="0,0,10,20" FontSize="13" Height="60" Width="240">
+                    </ListView>                    <StackPanel x:Name="LstActeursStackPanel"
+                                Margin="0,5,0,0"/>
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="Tout les réalisateur(s) : " FontWeight="DemiBold" Width="250" FontSize="15" Margin="0,0,0,5"/>
+                    <TextBlock Text="réalisateur(s) dans le film: " FontWeight="DemiBold" Width="250" FontSize="15" Margin="0,0,0,5"/>
+                    <StackPanel x:Name="RealisateurStackPanel" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <ListView x:Name="LstRealisateurs" 
+                          SelectionChanged="LstRealisateurs_SelectionChanged" Margin="0,0,10,20" FontSize="13" Height="60" Width="240">
+                    </ListView>
+                    <ListView x:Name="LstRealisateursInTheMovie" 
+                          SelectionChanged="LstRealisateursInTheMovie_SelectionChanged" Margin="0,0,10,20" FontSize="13" Height="60" Width="240">
+                    </ListView>
+                    <StackPanel x:Name="LstRealisateursStackPanel" Margin="0,5,0,0"/>
+                </StackPanel>
+
+
+            </StackPanel>
+
+           
+            
+        </GroupBox>
+
+        <!--Afficher les Projection-->
+        <Button x:Name="BtnAfficherProjections" Grid.Column="2" Grid.Row="1" Content="Afficher les projections" 
+                FontSize="15" Width="180"
+                Click="BtnAfficherProjections_Click" Margin="0,10" HorizontalAlignment="Right"></Button>
+
+
+
+        <!-- Actions -->
+        <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="3">
+
+            <Button x:Name="BtnDelete" VerticalAlignment="Center" Width="100" FontSize="15"
+                    Content="Supprimer" Click="BtnDelete_Click">
+            </Button>
+
+            <Button x:Name="BtnUpdate" VerticalAlignment="center" Width="100" FontSize="15"
+                    Margin="10,0,0,0"
+                    Content="Modifier" Click="BtnUpdate_Click">
+            </Button>
+
+            <!--<Button x:Name="BtnViderChamps" VerticalAlignment="center" Width="150" FontSize="15"
+                    Margin="30,0,0,0"
+                    Content="Vider Champs" Click="BtnViderChamps_Click"/>-->
+
+            <Button x:Name="BtnAdd" VerticalAlignment="Center" Width="100" 
+                    Margin="10,0,10,0"
+                    Content="Créer" Click="BtnAdd_Click" FontSize="15"/>
+
+        </StackPanel>
+
+
+
+        
+
+
+    </Grid>
+</Page>
