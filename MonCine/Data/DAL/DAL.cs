@@ -46,7 +46,6 @@ namespace MonCine.Data
             {
                 Console.WriteLine("Impossible de se connecter à la base de données " + ex.Message, "Erreur");
             }
-
             return db;
         }
     }
