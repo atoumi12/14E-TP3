@@ -6,9 +6,9 @@
       xmlns:local="clr-namespace:MonCine.Vues"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Accueil">
+      Title="Accueil" FontSize="30">
 
-    <Grid ShowGridLines="False" Background="AliceBlue" Margin="0,0,0,-6">
+    <Grid ShowGridLines="False" Background="AliceBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
@@ -19,19 +19,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Grid.Column="0" Source="/Ressources/Images/Logo.png"/>
-        <Label Grid.Row="0" Grid.Column="1" Content="Mon ciné" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontFamily="MV Boli" FontSize="36" FontWeight="Bold"/>
-        <Border Grid.Row="1" Grid.Column="1" BorderThickness="2,2,2,2" Height="280" Opacity="0.3" Margin="50,0,50,0">
-            <Border.Background>
-                <ImageBrush ImageSource="/Ressources/Images/sallecinema.jpg" />
-            </Border.Background>
-        </Border>
+        
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="330">
 
-        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,0" Height="300">
-            <Button Content="Consulter les abonnées" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,25,150,25" Click="Button_Click" Height="30"/>
-            <Button Content="Gestion des projections" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Click="Button_Click_1" Height="30"/>
-            <Button x:Name="BtnFilm" Content="Gestion des films" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Click="BtnFilm_Click" Height="30"/>
-            <Button x:Name="BtnAffiche" Content="Gestion de l'affiche" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Height="30" Click="BtnAffiche_Click"/>
+            <Button Content="Admin" Width="150" Margin="0,0,10,0" 
+                    Click="Button_Click"></Button>
+            <Button Content="Abonne" Width="150"></Button>
         </StackPanel>
 
     </Grid>

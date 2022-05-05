@@ -10,12 +10,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MonCine.Data;
 
 namespace MonCine.Vues
 {
     /// <summary>
-    /// Logique d'interaction pour Accueil.xaml
+    /// Interaction logic for Accueil.xaml
     /// </summary>
     public partial class Accueil : Page
     {
@@ -26,28 +25,8 @@ namespace MonCine.Vues
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            FAbonnes frmAbonnes = new FAbonnes(new DALAbonne());
-
-            NavigationService?.Navigate(frmAbonnes);
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            FProjections frmProjections = new FProjections(new DALFilm(), new DALSalle(), new DALProjection());
-
-            NavigationService?.Navigate(frmProjections);
-        }
-
-        private void BtnFilm_Click(object sender, RoutedEventArgs e)
-        {
-            FFilms frmFilms = new FFilms(new DALFilm(),  new DALActeur(), new DALRealisateur(), new DALProjection());
-            NavigationService?.Navigate(frmFilms);
-        }
-
-        private void BtnAffiche_Click(object sender, RoutedEventArgs e)
-        {
-            FAffiche frmAffiche = new FAffiche(new DALProjection(), new DALSalle());
-            NavigationService?.Navigate(frmAffiche);
+            FAdministrateur fadmin = new FAdministrateur();
+            NavigationService?.Navigate(fadmin);
         }
     }
 }

@@ -105,7 +105,7 @@ namespace MonCine.Vues
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.Navigate(new Accueil());
+            NavigationService.GoBack();
         }
     }
 }
