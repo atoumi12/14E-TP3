@@ -208,7 +208,7 @@ namespace MonCineTests
             });
         }
 
-        // TODO: CORRIEGER CE TEST !!
+   
         [Fact]
         public void GetProjectionsOfFilm_moqFind_ReturnProjectionListOfFilm()
         {
@@ -219,11 +219,11 @@ namespace MonCineTests
 
             Film film = projectionsList[0].Film;
             List<Projection> projectionsAttentu = projectionsList.Where(x => x.Film.Id == film.Id).ToList();
+            
             // Act
-
             List<Projection> projections = dal.GetProjectionsOfFilm(film);
 
-            // Act and Assert
+            // Assert
             Assert.Equal(projectionsAttentu.Count, projections.Count);
         }
 
