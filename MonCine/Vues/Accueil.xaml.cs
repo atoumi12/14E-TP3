@@ -32,7 +32,7 @@ namespace MonCine.Vues
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            FPreferencesAbonne prf = new FPreferencesAbonne(new DALFilm(), new DALRealisateur(), new DALAbonne());
+            FPreferencesAbonne prf = new FPreferencesAbonne(new DALRealisateur(), new DALAbonne(), new DALActeur());
             prf.Show();
         }
     }
