@@ -23,14 +23,24 @@ namespace MonCine.Data
 
         public int nbSeanceAssistees { get; set; }
 
+        public List<Acteur> ActeursPref { get; set; }
+        public List<Realisateur> RealisationsPref { get; set; }
+        public List<string> CategoriesPref { get; private set; }
+
+
 
         public Abonne(string pUsername)
         {
             Username = pUsername;
+
+
+            ActeursPref ??= new List<Acteur>();
+            RealisationsPref ??= new List<Realisateur>();
+            CategoriesPref ??= new List<string>();
         }
 
         public Abonne(string pUsername, string pActeurFavorie, string pRealisateurFavorie,
-            int pnbSeanceAssistees, DateTime pDateAdhesion, string pFirstName, string pLastname)
+            int pnbSeanceAssistees, DateTime pDateAdhesion, string pFirstName, string pLastname):base(pFirstName, pLastname)
         {
             Username = pUsername;
             ActeurFavorie = pActeurFavorie;
@@ -39,6 +49,10 @@ namespace MonCine.Data
             DateAdhesion = pDateAdhesion;
             FirstName = pFirstName;
             LastName = pLastname;
+
+            ActeursPref ??= new List<Acteur>();
+            RealisationsPref ??= new List<Realisateur>();
+            CategoriesPref ??= new List<string>();
         }
 
 
@@ -47,9 +61,19 @@ namespace MonCine.Data
             throw new NotImplementedException();
         }
 
-        public bool AimeCategorie()
+        public bool AimeCategorie(string pCategorie)
         {
-            throw new NotImplementedException();
+            try
+            {
+               CategoriesPref.Add(pCategorie);
+               
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return true;
         }
 
         public bool EstPrioriaitaire()

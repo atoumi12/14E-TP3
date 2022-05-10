@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MonCine.Data;
 
 namespace MonCine.Vues
 {
@@ -23,10 +24,16 @@ namespace MonCine.Vues
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
             FAdministrateur fadmin = new FAdministrateur();
             NavigationService?.Navigate(fadmin);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            FPreferencesAbonne prf = new FPreferencesAbonne(new DALFilm(), new DALRealisateur(), new DALAbonne());
+            prf.Show();
         }
     }
 }

@@ -23,10 +23,17 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
                     Width="330">
 
-            <Button Content="Admin" Width="150" Margin="0,0,10,0" 
-                    Click="Button_Click"></Button>
-            <Button Content="Abonne" Width="150"></Button>
+            <Button x:Name="btnAdmin" Content="Admin" Width="150" Margin="0,0,10,0" Click="btnAdmin_Click" 
+                   ></Button>
+            <Button x:Name="btnAbonne" Content="Abonne" Width="150"></Button>
+            
         </StackPanel>
+
+
+
+
+        <Button Grid.Row="0" Grid.Column="1" Content="Pref Abonne" Width="200" 
+                FontSize="18" Click="Button_Click_1"></Button>
 
     </Grid>
 </Page>
