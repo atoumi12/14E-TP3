@@ -129,23 +129,54 @@ namespace MonCine.Data
         /// </summary>
         /// <param name="pActeur"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public void AjouterActeurFavori(Acteur pActeur)
+        public bool AjouterActeurFavori(Acteur pActeur)
         {
-            if (pActeur is null)
+            try
             {
-                throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
+                if (pActeur is null)
+                {
+                    throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
+                }
+
+                bool acteurIsToAdd = ActeursPref.Count < 5 && !ActeursPref.Contains(pActeur);
+
+                if (acteurIsToAdd)
+                {
+                    ActeursPref.Add(pActeur);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
             }
 
-            bool acteurIsToAdd = ActeursPref.Count < 5 && !ActeursPref.Contains(pActeur);
+            return true;
+        }
 
-            if (acteurIsToAdd)
+        public bool SupprimerActeurFavori(Acteur pActeur)
+        {
+            try
             {
-                ActeursPref.Add(pActeur);
+                if (pActeur is null)
+                {
+                    throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
+                }
+
+                bool acteurIsToDelete = ActeursPref.Contains(pActeur);
+                if (acteurIsToDelete)
+                {
+                    ActeursPref.Remove(pActeur);
+                }
             }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+            return true;
         }
 
         #endregion
-
 
 
         public bool EstPrioriaitaire()

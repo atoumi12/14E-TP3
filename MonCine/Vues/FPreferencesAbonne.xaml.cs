@@ -20,10 +20,13 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FPreferencesAbonne : Window
     {
+        private string Saluer(string nom) => $"Bonjour, {nom} ! Voici vos préférences";
+
         #region CONST
 
-        private const string SALUTATIONS = "Bonjour, ";
         private const int NB_CAT_MAX = 3;
+        private const int NB_ACTEUR_MAX = 5;
+        private const int NB_REALISATEUR_MAX = 5;
 
         #endregion
 
@@ -46,7 +49,7 @@ namespace MonCine.Vues
 
         #endregion
 
-        public FPreferencesAbonne( DALRealisateur pDalRealisateur, DALAbonne pDalAbonne, DALActeur pDalActeur)
+        public FPreferencesAbonne(DALRealisateur pDalRealisateur, DALAbonne pDalAbonne, DALActeur pDalActeur)
         {
             InitializeComponent();
 
@@ -62,7 +65,7 @@ namespace MonCine.Vues
 
         private void InstanceOfItems()
         {
-            txtSalutations.Text = FPreferencesAbonne.SALUTATIONS + _abo.FirstName;
+            txtSalutations.Text = Saluer(_abo.FirstName);
 
             _realisateurs = _dalRealisateur.ReadItems();
 
@@ -90,10 +93,19 @@ namespace MonCine.Vues
             _acteursPref ??= new List<Acteur>();
             if (_abo.CategoriesPref.Count > 0)
             {
-                // TODO: Populer la liste des favori au depart si jamais
+                _abo.ActeursPref.ForEach(acteur =>
+                {
+                    _acteursPref.Add(acteur);
+                    lstActeursPref.Items.Add(acteur);
+                });
             }
 
-
+            // Realisateurs
+            // TODO: Populer les lst
+            _realisateurs = _dalRealisateur.ReadItems();
+            
+            
+            _realisateursPref ??= new List<Realisateur>();
         }
 
         #region categories
@@ -108,7 +120,7 @@ namespace MonCine.Vues
             if (lstCategories.SelectedItem != null)
             {
                 // Limite de trois catégorie préférée
-                if (lstCategoriesPref.Items.Count > FPreferencesAbonne.NB_CAT_MAX)
+                if (lstCategoriesPref.Items.Count >= FPreferencesAbonne.NB_CAT_MAX)
                 {
                     MessageBox.Show(
                         $"Le nombre maximale de catégories en favories est  : {FPreferencesAbonne.NB_CAT_MAX}, " +
@@ -123,8 +135,7 @@ namespace MonCine.Vues
                 bool catToAdd = !string.IsNullOrWhiteSpace(categorie) && !_categoriesPref.Contains(categorie);
                 if (catToAdd)
                 {
-                    bool catAjoutee = lstCategoriesPref.Items.Count < 3 && _abo.AjouterCategorieFavorie(categorie) &&
-                                      _dalAbonne.UpdateItem(_abo);
+                    bool catAjoutee = _abo.AjouterCategorieFavorie(categorie) && _dalAbonne.UpdateItem(_abo);
                     if (catAjoutee)
                     {
                         _categoriesPref.Add(categorie);
@@ -132,12 +143,7 @@ namespace MonCine.Vues
                     }
                     else
                     {
-                        string nbDepasse = _categoriesPref.Count >= 3
-                            ? $"\n - Le nombre maximale de catégorie est de : {FPreferencesAbonne.NB_CAT_MAX}"
-                            : "";
-
-
-                        MessageBox.Show($"Erreur d'ajout de catégorie !  {nbDepasse}", "Erreur", MessageBoxButton.OK,
+                        MessageBox.Show("Erreur d'ajout de catégorie !", "Erreur", MessageBoxButton.OK,
                             MessageBoxImage.Error);
                     }
                 }
@@ -197,17 +203,81 @@ namespace MonCine.Vues
 
             if (lstActeurs.SelectedItem != null)
             {
-                
-                // TODO: validation nombre acteurs
+                if (lstActeurs.Items.Count >= FPreferencesAbonne.NB_ACTEUR_MAX)
+                {
+                    MessageBox.Show(
+                        $"Le nombre maximale d'acteurs en favoris est  : {FPreferencesAbonne.NB_ACTEUR_MAX}, " +
+                        $"veuillez en supprimer pour en rajouter", "Ajout d'acteur préféré(s)", MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
 
                 Acteur acteur = lstActeurs.SelectedItem as Acteur;
-                
-                
-                _acteursPref.Add(acteur);
+                bool acteurIsToAdd = !_acteursPref.Contains(acteur);
 
+                if (acteurIsToAdd)
+                {
+                    bool acteurAdded = _abo.AjouterActeurFavori(acteur) && _dalAbonne.UpdateItem(_abo);
+                    if (acteurAdded)
+                    {
+                        _acteursPref.Add(acteur);
+                        lstActeursPref.Items.Add(acteur);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erreur d'ajout d'acteur !", "Erreur", MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"L'acteur \"{acteur}\" existe déjà dans votre liste de préférences.",
+                        "Ajout d'acteur",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
         }
 
-        # endregion
+
+        private void lstActeursPref_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstActeursPref.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            Acteur acteur = lstActeursPref.SelectedItem as Acteur;
+
+            bool acteurCanBeDeleted = _acteursPref.Contains(acteur);
+
+            if (acteurCanBeDeleted)
+            {
+                bool acteurDeleted = _abo.SupprimerActeurFavori(acteur) && _dalAbonne.UpdateItem(_abo);
+                if (acteurDeleted)
+                {
+                    _acteursPref.Remove(acteur);
+                    lstActeursPref.Items.Remove(acteur);
+                }
+                else
+                {
+                    MessageBox.Show("Erreur de suppression d'acteur ! ", "Erreur", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show($"L'acteur \"{acteur}\" n'existe pas dans votre liste de préférences.",
+                    "Suppression d'acteur",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        #endregion
+
+
+        #region realisateurs
+
+        #endregion
     }
 }

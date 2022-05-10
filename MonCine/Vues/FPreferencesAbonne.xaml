@@ -37,7 +37,7 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="txtSalutations" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Text="Bonjour, "></TextBlock>
+        <TextBlock x:Name="txtSalutations" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Text="Bonjour, "></TextBlock>
         
         <GroupBox Header="Catégorie(s)" Grid.Row="1" Grid.Column="1" FontSize="15" Grid.ColumnSpan="2" Grid.RowSpan="2">
 
@@ -69,6 +69,9 @@
 
                 <ListView x:Name="lstActeurs" Width="110"
                           Margin="2" FontSize="12" SelectionChanged="lstActeurs_SelectionChanged" ></ListView>
+
+                <ListView x:Name="lstActeursPref" Width="110"
+                          Margin="2" FontSize="12" SelectionChanged="lstActeursPref_SelectionChanged"></ListView>
             </StackPanel>
         </GroupBox>
 
