@@ -42,12 +42,12 @@ namespace MonCine.Vues
             dalProjection = pDalProjection;
             dalSalle = pDalSalle;
             dalAbonne = pDALAbonne;
-
+            btn_reservation.IsEnabled = false;
             ProjectionsVoulue = new ObservableCollection<Projection>();
             DateRecherche = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             lstProjections.ItemsSource = ProjectionsVoulue;
             CurentUser = currentUser;
-            InitialConfiguration(DateRecherche);
+            Configuration(DateRecherche);
             
         }
 
@@ -57,7 +57,7 @@ namespace MonCine.Vues
             return null;
         }
 
-        private void InitialConfiguration(DateTime pDate)
+        private void Configuration(DateTime pDate)
         {
             DatePickerRecherche.SelectedDate = pDate;
 
@@ -81,13 +81,17 @@ namespace MonCine.Vues
         }
 
 
-
+        
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             List<Projection> reservationsDeLAbonne = new List<Projection>();
-            reservationsDeLAbonne = CurentUser.Reservations;
+            if(CurentUser.Reservations != null)
+            {
+                reservationsDeLAbonne = CurentUser.Reservations;
+
+            }
             if (!reservationsDeLAbonne.Contains(uneProjection))
             {
                 CurentUser.Reservations.Add(uneProjection);
@@ -99,6 +103,11 @@ namespace MonCine.Vues
                 AfficherPlaceRestante(uneProjection);
 
                 dalProjection.UpdateItem(uneProjection);
+                GestionBtnReservation();
+
+                MessageBox.Show(
+                "Votre reservation a bien ete effectuer", "Reservation d'une seance", MessageBoxButton.OK,
+                MessageBoxImage.Information);
             }
             else
             {
@@ -110,6 +119,13 @@ namespace MonCine.Vues
             
         }
 
+
+        public void GestionBtnReservation()
+        {
+            lstProjections.SelectedItem = null;
+            btn_reservation.IsEnabled = false;
+        }
+
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             NavigationService?.GoBack();
@@ -118,7 +134,8 @@ namespace MonCine.Vues
         private void DatePickerRecherche_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             DateRecherche = DatePickerRecherche.SelectedDate.Value;
-            InitialConfiguration(DateRecherche);
+            GestionBtnReservation();
+            Configuration(DateRecherche);
         }
 
         private void LstProjection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -126,6 +143,11 @@ namespace MonCine.Vues
             uneProjection = (Projection)lstProjections.SelectedItem;
 
             AfficherPlaceRestante(uneProjection);
+
+            if(uneProjection != null && uneProjection.Salle.Places.Count > 0)
+            {
+                btn_reservation.IsEnabled = true;
+            }
             //int nbPlaceRestante = uneProjection.Salle.Places.Count;
             //place_restante.Text = projection.;
         }

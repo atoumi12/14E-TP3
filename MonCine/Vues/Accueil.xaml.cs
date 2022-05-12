@@ -37,8 +37,8 @@ namespace MonCine.Vues
             List<Abonne> lstAbo = dALAbonne.ReadItems();
             Abonne abonne = lstAbo[0];
 
-            FMenuAbonne famenu = new FMenuAbonne(abonne);
-            NavigationService?.Navigate(famenu);
+            FChoixAbonne fchoixabo = new FChoixAbonne(new DALAbonne());
+            NavigationService?.Navigate(fchoixabo);
 
         }
     }

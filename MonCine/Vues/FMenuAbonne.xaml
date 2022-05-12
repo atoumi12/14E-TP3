@@ -20,11 +20,14 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
+        <TextBlock x:Name="userName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                   FontSize="20"></TextBlock>
+        
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                     Width="330">
 
-            <Button Content="Voire les films a l'affiche" Width="150" Margin="10,10,10,40" 
-                    Click="VoireFilm_Click"></Button>
+            <Button Content="Voire les films a l'affiche" Width="250" Height="50px" Margin="10,10,10,40" 
+                    FontSize="20" Click="VoireFilm_Click"></Button>
         </StackPanel>
 
     </Grid>

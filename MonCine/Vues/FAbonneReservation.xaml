@@ -43,9 +43,9 @@
         <TextBlock x:Name="place_restante" Grid.Row="2" Grid.Column="2" Text=""
                    Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow"   FontSize="20"></TextBlock>
 
-        <Button Grid.Row="3" Grid.Column="2" Width="100"
-        Margin="0,30,0,30"  Grid.RowSpan="1" Grid.ColumnSpan="3" Click="Button_Click"
-                  >reserver la place</Button>
+        <Button x:Name="btn_reservation" Grid.Row="3" Grid.Column="2" Width="100"
+        Margin="0,30,0,30"  Grid.RowSpan="1" Grid.ColumnSpan="3" 
+        Click="Button_Click">reserver la place</Button>
 
     </Grid>
 

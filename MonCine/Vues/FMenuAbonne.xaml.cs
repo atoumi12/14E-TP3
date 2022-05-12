@@ -26,6 +26,8 @@ namespace MonCine.Vues
         {
             InitializeComponent();
             CurrentUser = currentUser;
+            string UserName = CurrentUser.FirstName + " " + CurrentUser.LastName;
+            userName.Text = UserName;
         }
 
         private void VoireFilm_Click(object sender, RoutedEventArgs e)
