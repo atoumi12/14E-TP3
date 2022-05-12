@@ -35,13 +35,13 @@ namespace MonCine.Vues
             UserInfos.Text = $"Nom et Prénom : {pAbonne.FirstName} {pAbonne.LastName}" +
                 $"\n" +
                 $"\n" +
-                $"Acteur favori : {pAbonne.ActeurFavorie}" +
+                $"Acteur(s) favori(s) : {pAbonne.AfficherActeurs()}" +
                 $"\n" +
                 $"\n" +
-                $"Réalisateur favori : {pAbonne.RealisateurFavorie}" +
+                $"Réalisateur(s) favori(s) : {pAbonne.AfficherRealisateurs()}" +
                 $"\n" +
                 $"\n" +
-                $"Séance assistée(s): {pAbonne.nbSeanceAssistees}";
+                $"Séance(s) assistée(s): {pAbonne.nbSeanceAssistees}";
 
             DisableButtons();
 

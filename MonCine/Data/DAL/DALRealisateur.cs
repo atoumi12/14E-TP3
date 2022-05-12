@@ -22,9 +22,14 @@ namespace MonCine.Data
         {
             List<Realisateur> realisateurs = new List<Realisateur>
             {
-                new Realisateur("R-Jane", "Doe"),
-                new Realisateur("R-Jack", "Jones"),
-                new Realisateur("R-Jane", "Doe")
+                new Realisateur("James", "Cameron"),
+                new Realisateur("Steven", "Spielberg"),
+                new Realisateur("Ridley", "Scott"),
+                new Realisateur("Christopher", "Nolan"),
+                new Realisateur("Martin", "Scorsese"),
+                new Realisateur("Quentin", "Tarantino"),
+                new Realisateur("George", "Lucas"),
+                new Realisateur("Michael", "Bay")
             };
 
             try

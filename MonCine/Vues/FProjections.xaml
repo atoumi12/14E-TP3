@@ -41,12 +41,12 @@
 
         <!-- Details d'un film -->
         <TextBlock Grid.Row="3" Grid.Column="1" Text="Film : " FontWeight="DemiBold"></TextBlock>
-        <ComboBox x:Name="FilmCombobox" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"></ComboBox>
+        <ComboBox x:Name="FilmCombobox" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" FontSize="12"></ComboBox>
 
 
         <TextBlock Grid.Row="4" Grid.Column="1" Text="Salle : " FontWeight="DemiBold"></TextBlock>
         <ComboBox x:Name="SalleCombobox" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"
-                  Margin="0,2,0,0"></ComboBox>
+                  Margin="0,2,0,0" FontSize="12"></ComboBox>
 
         <TextBlock Grid.Row="5" Grid.Column="1" Text="Date de projection : " FontWeight="DemiBold"></TextBlock>
         <DatePicker x:Name="DatePickerProjection" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" FontSize="15" 

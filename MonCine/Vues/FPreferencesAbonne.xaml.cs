@@ -91,7 +91,7 @@ namespace MonCine.Vues
             lstActeurs.ItemsSource = _acteurs;
 
             _acteursPref ??= new List<Acteur>();
-            if (_abo.CategoriesPref.Count > 0)
+            if (_abo.ActeursPref.Count > 0)
             {
                 _abo.ActeursPref.ForEach(acteur =>
                 {
@@ -101,11 +101,11 @@ namespace MonCine.Vues
             }
 
             // Realisateurs
-            // TODO: Populer les lst
             _realisateurs = _dalRealisateur.ReadItems();
-            
+            lstRealisateurs.ItemsSource = _realisateurs;
             
             _realisateursPref ??= new List<Realisateur>();
+
         }
 
         #region categories
@@ -123,8 +123,8 @@ namespace MonCine.Vues
                 if (lstCategoriesPref.Items.Count >= FPreferencesAbonne.NB_CAT_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale de catégories en favories est  : {FPreferencesAbonne.NB_CAT_MAX}, " +
-                        $"veuillez en supprimer pour en rajouter", "Ajout de catégorie préférée", MessageBoxButton.OK,
+                        $"Le nombre maximale de catégories en favories est : {FPreferencesAbonne.NB_CAT_MAX}. " +
+                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de catégorie préférée", MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
                 }
@@ -206,8 +206,8 @@ namespace MonCine.Vues
                 if (lstActeurs.Items.Count >= FPreferencesAbonne.NB_ACTEUR_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale d'acteurs en favoris est  : {FPreferencesAbonne.NB_ACTEUR_MAX}, " +
-                        $"veuillez en supprimer pour en rajouter", "Ajout d'acteur préféré(s)", MessageBoxButton.OK,
+                        $"Le nombre maximale d'acteurs en favoris est : {FPreferencesAbonne.NB_ACTEUR_MAX}. " +
+                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout d'acteur préféré(s)", MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
                 }
@@ -275,9 +275,61 @@ namespace MonCine.Vues
 
         #endregion
 
-
         #region realisateurs
 
+        private void lstRealisateurs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstRealisateurs.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            if (lstRealisateurs.SelectedItem != null)
+            {
+                if (lstRealisateurs.Items.Count >= FPreferencesAbonne.NB_REALISATEUR_MAX)
+                {
+                    MessageBox.Show(
+                        $"Le nombre maximale de réalisateurs en favoris est : {FPreferencesAbonne.NB_REALISATEUR_MAX}. " +
+                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de réalisateur préféré", MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+
+                Realisateur realisateur = lstRealisateurs.SelectedItem as Realisateur;
+                bool realisateurIsToAdd = !_realisateursPref.Contains(realisateur);
+
+                if (realisateurIsToAdd)
+                {
+                    bool realisateurAdded = _abo.AjouterRealisateurFavori(realisateur) && _dalAbonne.UpdateItem(_abo);
+                    if (realisateurAdded)
+                    {
+                        _realisateursPref.Add(realisateur);
+                        lstRealisateursPref.Items.Add(realisateur);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erreur d'ajout de réalisateur !", "Erreur", MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"Le réslisateur \"{realisateur}\" existe déjà dans votre liste de préférences.",
+                        "Ajout de réalisateur",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+
+
+        private void lstRealisateursPref_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show("XXX");
+        }
+
         #endregion
+
     }
 }

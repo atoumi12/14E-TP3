@@ -12,11 +12,6 @@ namespace MonCine.Data
         public string Username { get; set; }
         public DateTime DateAdhesion { get; set; }
 
-        public String ActeurFavorie { get; set; }
-
-        public String RealisateurFavorie { get; set; }
-
-        public String Categorie { get; set; }
 
         public bool Recomprenses { get; set; }
 
@@ -40,13 +35,11 @@ namespace MonCine.Data
             CategoriesPref ??= new List<string>();
         }
 
-        public Abonne(string pUsername, string pActeurFavorie, string pRealisateurFavorie,
-            int pnbSeanceAssistees, DateTime pDateAdhesion, string pFirstName, string pLastname) : base(pFirstName,
+        public Abonne(string pFirstName, string pLastname, string pUsername,
+            int pnbSeanceAssistees, DateTime pDateAdhesion ) : base(pFirstName,
             pLastname)
         {
             Username = pUsername;
-            ActeurFavorie = pActeurFavorie;
-            RealisateurFavorie = pRealisateurFavorie;
             nbSeanceAssistees = pnbSeanceAssistees;
             DateAdhesion = pDateAdhesion;
             FirstName = pFirstName;
@@ -121,7 +114,7 @@ namespace MonCine.Data
         }
 
         #endregion
-
+        
         #region Acteur
 
         /// <summary>
@@ -178,6 +171,56 @@ namespace MonCine.Data
 
         #endregion
 
+        #region Realisateur
+
+        public bool AjouterRealisateurFavori(Realisateur pRealisateur)
+        {
+            try
+            {
+                if (pRealisateur is null)
+                {
+                    throw new ArgumentNullException("pRealisateur", "Le réalisateur ne peut pas être null");
+                }
+
+                bool realisateurIsToAdd = RealisationsPref.Count < 5 && !RealisationsPref.Contains(pRealisateur);
+
+                if (realisateurIsToAdd)
+                {
+                    RealisationsPref.Add(pRealisateur);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+            return true;
+        }
+
+        public bool SupprimerRealisateurFavori(Realisateur pRealisateur)
+        {
+            try
+            {
+                if (pRealisateur is null)
+                {
+                    throw new ArgumentNullException("pRealisateur", "Le réalisateur ne peut pas être null ");
+                }
+
+                bool realisateurIsToDelete = RealisationsPref.Contains(pRealisateur);
+                if (realisateurIsToDelete)
+                {
+                    RealisationsPref.Remove(pRealisateur);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+            return true;
+        }
+        #endregion
+
 
         public bool EstPrioriaitaire()
         {
@@ -185,6 +228,19 @@ namespace MonCine.Data
         }
 
 
+        public string AfficherActeurs()
+        {
+            string res = "";
+            ActeursPref.ForEach(acteur=> res += acteur);
+            return res.Length > 0 ? res : "Aucun acteur ajouté en favori";
+        }
+
+        public string AfficherRealisateurs()
+        {
+            string res = "";
+            RealisationsPref.ForEach(r => res += r);
+            return res.Length > 0 ? res : "Aucun réalisateur ajouté en favori";
+        }
         public override string ToString()
         {
             return $"{FirstName} {LastName}";

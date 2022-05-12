@@ -25,7 +25,12 @@ namespace MonCine.Data
         {
             List<Film> films = new List<Film>
             {
-                new Film("Film 1")
+                new Film("Fast and Furious"),
+                new Film("The rundown"),
+                new Film("Eagle Eye"),
+                new Film("Unknown"),
+                new Film("Source Code"),
+                new Film("Now you see me 2")
             };
 
             try

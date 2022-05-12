@@ -38,7 +38,8 @@
                    Text="Liste des films" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" />
 
         <ListView x:Name="LstFilms" Grid.Row="2" Grid.Column="1"
-                  SelectionChanged="LstFilms_SelectionChanged" Margin="0,0,10,0" FontSize="18" SelectionMode="Multiple" >
+                  SelectionChanged="LstFilms_SelectionChanged" 
+                  Margin="0,0,10,0" FontSize="14" SelectionMode="Single" >
         </ListView>
 
         <!-- Details d'un film -->

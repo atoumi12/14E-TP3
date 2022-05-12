@@ -24,9 +24,9 @@ namespace MonCine.Data
             uneDate = DateTime.Today;
             List<Abonne> abonnes = new List<Abonne>
             {
-                new Abonne("Abonne 1", "Leonardo Di caprio", "Denis Villeneuve", 12, uneDate, "Gwenael", "Galliot"),
-                new Abonne("Abonne 2", "Johnny depp", "Denis Villeneuve", 3, uneDate, "Loan", "Rage"),
-                new Abonne("Abonne 3", "robert downey jr", "Denis Villeneuve", 22, uneDate, "Ahmed", "Toumi")
+                new Abonne("Gwenael", "Galliot", "Abonne 1", 12, uneDate),
+                new Abonne("Loan", "Rage", "Abonne 2", 3, uneDate),
+                new Abonne("Ahmed", "Toumi", "Abonne 3", 22, uneDate)
             };
 
             try
@@ -65,7 +65,6 @@ namespace MonCine.Data
         }
 
 
-
         public bool AddItem(Abonne pObj)
         {
             throw new NotImplementedException();
@@ -75,6 +74,7 @@ namespace MonCine.Data
         {
             throw new NotImplementedException();
         }
+
         public bool UpdateItem(Abonne pAbonne)
         {
             if (pAbonne is null)
@@ -89,7 +89,8 @@ namespace MonCine.Data
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Impossible de mettre à jour l'abonne {pAbonne.Username} dans la collection {ex.Message}",
+                MessageBox.Show(
+                    $"Impossible de mettre à jour l'abonne {pAbonne.Username} dans la collection {ex.Message}",
                     "Erreur de mise à jour", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }

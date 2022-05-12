@@ -39,8 +39,6 @@ namespace MonCine.Vues
         int indexOfMovieSelected;
 
 
-
-
         public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur,
             DALProjection pDalProjection)
         {
@@ -88,10 +86,7 @@ namespace MonCine.Vues
             LstCategorieInTheMovie.ItemsSource = CategoriesDansLeFilm;
 
             LstFilms.SelectedIndex = -1;
-
         }
-
-
 
 
         // GESTION DES BTN ////////////////
@@ -133,6 +128,7 @@ namespace MonCine.Vues
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
+
             ClearLisView();
             InitialItemConfiguration();
         }
@@ -175,6 +171,7 @@ namespace MonCine.Vues
                     }
                 }
             }
+
             InitialItemConfiguration();
         }
 
@@ -204,6 +201,7 @@ namespace MonCine.Vues
                         MessageBoxButton.OK, MessageBoxImage.None);
                 }
             }
+
             ClearLisView();
             InitialItemConfiguration();
         }
@@ -230,17 +228,16 @@ namespace MonCine.Vues
         }
 
 
-
-
         // GESTION DES LISTES ////////////////
 
 
         private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LstFilms.SelectedIndex == -1)
-            {
-                ClearLisView();
-            }
+            //if (LstFilms.SelectedItems.Count > 1)
+            //{
+            //    ClearLisView();
+            //    return;
+            //}
 
             Film film = (Film)LstFilms.SelectedItem;
 
@@ -248,11 +245,7 @@ namespace MonCine.Vues
             {
                 NameField.Text = film.Name;
                 ChargementDataDuFilm(film);
-            }
-
-            if (LstFilms.SelectedIndex != -1)
-            {
-                indexOfMovieSelected = LstFilms.SelectedIndex;
+                //LstFilms.SelectedIndex = -1;
             }
 
             BtnDelete.IsEnabled = film != null;
@@ -268,6 +261,7 @@ namespace MonCine.Vues
             {
                 RealisateursDansLeFilm.Add(realisateur);
             }
+
             LstRealisateurs.SelectedIndex = -1;
         }
 
@@ -278,7 +272,7 @@ namespace MonCine.Vues
             {
                 ActeursDansLeFilm.Add(acteur);
             }
-           
+
             LstActeurs.SelectedIndex = -1;
         }
 
@@ -289,7 +283,7 @@ namespace MonCine.Vues
             {
                 CategoriesDansLeFilm.Add(categorie);
             }
-            
+
             LstCategories.SelectedIndex = -1;
         }
 
@@ -312,8 +306,6 @@ namespace MonCine.Vues
         }
 
 
-
-
         // UTILITAIIRE ////////////////
 
         private void ChargementDataDuFilm(Film _film)
@@ -333,9 +325,7 @@ namespace MonCine.Vues
             {
                 CategoriesDansLeFilm.Add(categorie.ToString());
             }
-
         }
-
 
 
         private void ClearLisView()
@@ -343,10 +333,7 @@ namespace MonCine.Vues
             ActeursDansLeFilm.Clear();
             RealisateursDansLeFilm.Clear();
             CategoriesDansLeFilm.Clear();
-
         }
-
-
 
 
         /// <summary>
@@ -372,7 +359,6 @@ namespace MonCine.Vues
         }
 
 
-
         private List<Categorie> TranformeEnumToList(ObservableCollection<String> _CategoriesDansLeFilm)
         {
             List<Categorie> categories = new List<Categorie>();
@@ -384,9 +370,9 @@ namespace MonCine.Vues
                     categories.Add(uneCat);
                 }
             }
+
             return categories;
         }
-
 
 
         /// <summary>
@@ -410,7 +396,6 @@ namespace MonCine.Vues
             {
                 erreurs += " - Veuillez choisir au moins une catégorie du film \n";
             }
-
 
 
             // ACTEURS

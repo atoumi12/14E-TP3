@@ -23,9 +23,15 @@ namespace MonCine.Data
         {
             List<Acteur> acteurs = new List<Acteur>
             {
-                new Acteur("A-Tom", "Tremblay"),
-                new Acteur("A-Giorgina", "Loza"),
-                new Acteur("A-Berny", "Fleury")
+                new Acteur("Leonardo", "DiCaprio"),
+                new Acteur("Giorgina", "Loza"),
+                new Acteur("Berny", "Fleury"),
+                new Acteur("Johnny", "Depp"),
+                new Acteur("Bruce", "Willis"),
+                new Acteur("Bob", "Saget"),
+                new Acteur("Tom", "Cruise"),
+                new Acteur("Alec", "Baldwin"),
+                new Acteur("Dwayne", "Johnson")
             };
 
             try
