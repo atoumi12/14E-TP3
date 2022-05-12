@@ -18,9 +18,27 @@ namespace MonCine.Data
             AddDefaultAbonnes();
         }
 
-        public bool AddItem(Abonne pObj)
+        public bool AddItem(Abonne pabonne)
         {
-            throw new NotImplementedException();
+            if (pabonne is null)
+            {
+                throw new ArgumentNullException("pFilm", "Le film ne peut pas être null");
+            }
+
+            try
+            {
+                var collection = database.GetCollection<Abonne>(CollectionName);
+                collection.InsertOne(pabonne);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible d'ajouter le film {pabonne.FirstName} dans la collection {ex.Message}",
+                    "Erreur d'ajout", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                throw;
+            }
+
+            return true;
         }
 
         public bool DeleteItem(Abonne pObj)

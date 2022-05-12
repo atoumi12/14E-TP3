@@ -19,7 +19,7 @@ namespace MonCine.Data
 
         public bool Recomprenses { get; set; }
 
-        public bool Reservation { get; set; }
+        public List<Projection> Reservations { get; set; }
 
         public int nbSeanceAssistees { get; set; }
 

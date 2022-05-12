@@ -26,28 +26,28 @@ namespace MonCine.Data
         {
             List<Projection> projectionsList = new List<Projection>
             {
-                new Projection(new Salle(1), new Film("Film1 Dal Projection"), new DateTime(2022, 01,01)),
-                new Projection(new Salle(2), new Film("Film1 Dal Projection"), new DateTime(2022, 04,20)),
-                new Projection(new Salle(3), new Film("Film2 Dal Projection"), new DateTime(2022, 04,20)),
-                new Projection(new Salle(4), new Film("Film2 Dal Projection"), DateTime.Now)
+                //new Projection(new Salle(1), new Film("Film1 Dal Projection"), new DateTime(2022, 01,01)),
+                //new Projection(new Salle(2), new Film("Film1 Dal Projection"), new DateTime(2022, 04,20)),
+                //new Projection(new Salle(3), new Film("Film2 Dal Projection"), new DateTime(2022, 04,20)),
+                //new Projection(new Salle(4), new Film("Film2 Dal Projection"), DateTime.Now)
             };
 
-            try
-            {
-                var collection = database.GetCollection<Projection>(CollectionName);
-                if (collection.CountDocuments(Builders<Projection>.Filter.Empty) <= 0)
-                {
-                    await collection.InsertManyAsync(projectionsList);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Impossible d'ajouter des projections dans la collection " + ex.Message, "Erreur",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                throw;
+            //try
+            //{
+            //    var collection = database.GetCollection<Projection>(CollectionName);
+            //    if (collection.CountDocuments(Builders<Projection>.Filter.Empty) <= 0)
+            //    {
+            //        await collection.InsertManyAsync(projectionsList);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Impossible d'ajouter des projections dans la collection " + ex.Message, "Erreur",
+            //        MessageBoxButton.OK,
+            //        MessageBoxImage.Error);
+            //    throw;
 
-            }
+            //}
         }
         /// <summary>
         /// Récupère l'ensemble des projections de la BD

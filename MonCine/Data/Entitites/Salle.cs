@@ -10,11 +10,12 @@ namespace MonCine.Data
     {
         [BsonId] public ObjectId Id { get; set; }
         public int NumSale { get; set; }
-        private Place Place { get; set; }
+        public List<Place> Places { get; set; }
 
 
-        public Salle(int pnumSale)
+        public Salle(int pnumSale, List<Place> pPlaces)
         {
+            Places = pPlaces;
             NumSale = pnumSale;
         }
 

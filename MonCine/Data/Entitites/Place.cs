@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MonCine.Data
 {
-    class Place
+    public class Place
     {
         private int Numero { get; set; }
         private bool Disponible { get; set; }
