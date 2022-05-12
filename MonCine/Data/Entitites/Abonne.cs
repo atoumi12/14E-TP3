@@ -39,6 +39,7 @@ namespace MonCine.Data
             DateAdhesion = pDateAdhesion;
             FirstName = pFirstName;
             LastName = pLastname;
+            Reservations = new List<Projection>();
         }
 
 

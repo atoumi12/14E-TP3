@@ -22,7 +22,7 @@ namespace MonCine.Vues
         private List<Film> films;
         private List<Film> filmsAlAffiche = new List<Film>();
         private DALFilm Dal { get; set; }
-        private Abonne currentUser { get; set; }
+        private Abonne CurrentUser { get; set; }
 
 
         public FAbonneFilms(DALFilm dal, Abonne currentUser)
@@ -30,6 +30,7 @@ namespace MonCine.Vues
             InitializeComponent();
             Dal = dal;
             films = Dal.ReadItems();
+            CurrentUser = currentUser;
             initList();
         }
 
@@ -56,7 +57,7 @@ namespace MonCine.Vues
         {
             Film unFilm = LstFilms.SelectedItem as Film;
 
-            FAbonneReservation freserv = new FAbonneReservation(new DALProjection(),new DALSalle(), unFilm);
+            FAbonneReservation freserv = new FAbonneReservation(new DALAbonne(), new DALProjection(),new DALSalle(), unFilm, CurrentUser);
             NavigationService?.Navigate(freserv);
         }
     }

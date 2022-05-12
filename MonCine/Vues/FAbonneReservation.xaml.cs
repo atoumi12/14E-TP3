@@ -23,6 +23,7 @@ namespace MonCine.Vues
 
         private DALProjection dalProjection { get; set; }
         private DALSalle dalSalle { get; set; }
+        private DALAbonne dalAbonne { get; set; }
         private List<Salle> Salles { get; set; }
         private DateTime DateRecherche { get; set; }
         private Film unFilm { get; set; }
@@ -31,17 +32,21 @@ namespace MonCine.Vues
         private Projection uneProjection { get; set; }
         private Salle uneSalle { get; set; }
         private int nbPlaceRestante { get; set; }
+        private Abonne CurentUser { get; set; }
 
 
-        public FAbonneReservation(DALProjection pDalProjection, DALSalle pDalSalle, Film unFilmChoisie)
+        public FAbonneReservation(DALAbonne pDALAbonne, DALProjection pDalProjection, DALSalle pDalSalle, Film unFilmChoisie, Abonne currentUser)
         {
             InitializeComponent();
             unFilm = unFilmChoisie;
             dalProjection = pDalProjection;
             dalSalle = pDalSalle;
+            dalAbonne = pDALAbonne;
+
             ProjectionsVoulue = new ObservableCollection<Projection>();
             DateRecherche = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             lstProjections.ItemsSource = ProjectionsVoulue;
+            CurentUser = currentUser;
             InitialConfiguration(DateRecherche);
             
         }
@@ -81,7 +86,28 @@ namespace MonCine.Vues
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            List<Projection> reservationsDeLAbonne = new List<Projection>();
+            reservationsDeLAbonne = CurentUser.Reservations;
+            if (!reservationsDeLAbonne.Contains(uneProjection))
+            {
+                CurentUser.Reservations.Add(uneProjection);
+                dalAbonne.UpdateItem(CurentUser);
 
+
+                Place unePlace = uneProjection.Salle.Places[0];
+                uneProjection.Salle.Places.Remove(unePlace);
+                AfficherPlaceRestante(uneProjection);
+
+                dalProjection.UpdateItem(uneProjection);
+            }
+            else
+            {
+                MessageBox.Show(
+                "Vous avez deja une reservation pour cette projection", "Reservation d'une seance", MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            }
+
+            
         }
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -98,6 +124,14 @@ namespace MonCine.Vues
         private void LstProjection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             uneProjection = (Projection)lstProjections.SelectedItem;
+
+            AfficherPlaceRestante(uneProjection);
+            //int nbPlaceRestante = uneProjection.Salle.Places.Count;
+            //place_restante.Text = projection.;
+        }
+
+        private void AfficherPlaceRestante(Projection uneProjection)
+        {
             if (uneProjection != null)
             {
                 if (uneProjection.Salle.Places != null)
@@ -111,9 +145,6 @@ namespace MonCine.Vues
                 }
 
             }
-
-            //int nbPlaceRestante = uneProjection.Salle.Places.Count;
-            //place_restante.Text = projection.;
         }
     }
 }

@@ -32,10 +32,11 @@ namespace MonCine.Vues
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+
             DALAbonne dALAbonne = new DALAbonne();
-            Abonne abonne = new Abonne("un nouveau user");
-            dALAbonne.AddItem(abonne);
-            
+            List<Abonne> lstAbo = dALAbonne.ReadItems();
+            Abonne abonne = lstAbo[0];
+
             FMenuAbonne famenu = new FMenuAbonne(abonne);
             NavigationService?.Navigate(famenu);
 

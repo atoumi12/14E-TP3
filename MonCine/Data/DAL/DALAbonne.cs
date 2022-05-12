@@ -66,7 +66,24 @@ namespace MonCine.Data
 
         public bool UpdateItem(Abonne pObj)
         {
-            throw new NotImplementedException();
+            if (pObj is null)
+            {
+                throw new ArgumentNullException("pFilm", "Le film ne peut pas être null");
+            }
+
+            try
+            {
+                var collection = database.GetCollection<Abonne>(CollectionName);
+                collection.ReplaceOne(x => x.Id == pObj.Id, pObj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible de mettre à jour le film {pObj.Username} dans la collection {ex.Message}",
+                    "Erreur de mise à jour", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
+
+            return true;
         }
 
         private async void AddDefaultAbonnes()
