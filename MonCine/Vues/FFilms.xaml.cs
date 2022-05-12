@@ -233,19 +233,12 @@ namespace MonCine.Vues
 
         private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (LstFilms.SelectedItems.Count > 1)
-            //{
-            //    ClearLisView();
-            //    return;
-            //}
-
             Film film = (Film)LstFilms.SelectedItem;
 
             if (film != null)
             {
                 NameField.Text = film.Name;
                 ChargementDataDuFilm(film);
-                //LstFilms.SelectedIndex = -1;
             }
 
             BtnDelete.IsEnabled = film != null;

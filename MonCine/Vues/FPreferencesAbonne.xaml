@@ -65,28 +65,28 @@
         </GroupBox>
 
         <GroupBox Header="Acteur(s)" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2"
-                  FontSize="12" Margin="10,0,0,0">
+                  FontSize="15" Margin="10,0,0,0">
 
             <StackPanel Orientation="Horizontal">
 
-                <ListView x:Name="lstActeurs" Width="110"
+                <ListView x:Name="lstActeurs" Width="110" FontSize="11"
                           Margin="2" SelectionChanged="lstActeurs_SelectionChanged" ></ListView>
 
-                <ListView x:Name="lstActeursPref" Width="110"
+                <ListView x:Name="lstActeursPref" Width="110" FontSize="11"
                           Margin="2" SelectionChanged="lstActeursPref_SelectionChanged"></ListView>
             </StackPanel>
         </GroupBox>
 
 
         <GroupBox Header="Réalisateur(s)" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
-                  FontSize="12" Margin="10,0,0,0">
+                  FontSize="15" Margin="10,0,0,0">
 
             <StackPanel Orientation="Horizontal">
 
-                <ListView x:Name="lstRealisateurs" Width="110"
+                <ListView x:Name="lstRealisateurs" Width="110" FontSize="11"
                           Margin="2" SelectionChanged="lstRealisateurs_SelectionChanged"></ListView>
 
-                <ListView x:Name="lstRealisateursPref" Width="110"
+                <ListView x:Name="lstRealisateursPref" Width="110" FontSize="11"
                           Margin="2" SelectionChanged="lstRealisateursPref_SelectionChanged"></ListView>
             </StackPanel>
         </GroupBox>

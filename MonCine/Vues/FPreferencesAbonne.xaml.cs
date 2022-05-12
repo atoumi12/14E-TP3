@@ -20,7 +20,7 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FPreferencesAbonne : Window
     {
-        private string Saluer(string nom) => $"Bonjour, {nom} ! Voici vos préférences";
+        private string Saluer(Abonne abo) => $"Bonjour, {abo.FirstName} ! Voici vos préférences";
 
         #region CONST
 
@@ -57,26 +57,23 @@ namespace MonCine.Vues
             _dalAbonne = pDalAbonne;
             _dalActeur = pDalActeur;
 
+            // TODO: Choix de l'abonné
             List<Abonne> a = pDalAbonne.ReadItems();
             _abo = a[0];
 
             InstanceOfItems();
         }
 
+        // TODO: Reparer beug dédoublement valeurs dans les listes.
         private void InstanceOfItems()
         {
-            txtSalutations.Text = Saluer(_abo.FirstName);
-
-            _realisateurs = _dalRealisateur.ReadItems();
-
+            txtSalutations.Text = Saluer(_abo);
 
             // Categories
             _categories = typeof(Categorie).GetEnumNames().ToList();
             lstCategories.ItemsSource = _categories;
 
             _categoriesPref ??= new List<string>();
-
-            //lstCategoriesPref.ItemsSource = _categoriesPref;
             if (_abo.CategoriesPref.Count > 0)
             {
                 _abo.CategoriesPref.ForEach(cat =>
@@ -93,7 +90,8 @@ namespace MonCine.Vues
             _acteursPref ??= new List<Acteur>();
             if (_abo.ActeursPref.Count > 0)
             {
-                _abo.ActeursPref.ForEach(acteur =>
+                List<Acteur> acteurs = _abo.ActeursPref.OrderBy(a=>a.FirstName).ToList();
+                acteurs.ForEach(acteur =>
                 {
                     _acteursPref.Add(acteur);
                     lstActeursPref.Items.Add(acteur);
@@ -105,6 +103,15 @@ namespace MonCine.Vues
             lstRealisateurs.ItemsSource = _realisateurs;
             
             _realisateursPref ??= new List<Realisateur>();
+            if (_abo.RealisationsPref.Any())
+            {
+                List<Realisateur> realisateurs = _abo.RealisationsPref.OrderBy(r => r.FirstName).ToList();
+                realisateurs.ForEach(r =>
+                {
+                    _realisateursPref.Add(r);
+                    lstRealisateursPref.Items.Add(r);
+                });
+            }
 
         }
 
@@ -123,7 +130,7 @@ namespace MonCine.Vues
                 if (lstCategoriesPref.Items.Count >= FPreferencesAbonne.NB_CAT_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale de catégories en favories est : {FPreferencesAbonne.NB_CAT_MAX}. " +
+                        $"Le nombre maximale de catégories en favories est : {FPreferencesAbonne.NB_CAT_MAX}" +
                         $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de catégorie préférée", MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
@@ -201,21 +208,20 @@ namespace MonCine.Vues
                 return;
             }
 
-            if (lstActeurs.SelectedItem != null)
+            Acteur acteur = lstActeurs.SelectedItem as Acteur;
+            if (acteur != null)
             {
-                if (lstActeurs.Items.Count >= FPreferencesAbonne.NB_ACTEUR_MAX)
+                if (_acteursPref.Count >= FPreferencesAbonne.NB_ACTEUR_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale d'acteurs en favoris est : {FPreferencesAbonne.NB_ACTEUR_MAX}. " +
-                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout d'acteur préféré(s)", MessageBoxButton.OK,
+                        $"Le nombre maximale d'acteurs en favoris est : {FPreferencesAbonne.NB_ACTEUR_MAX}" +
+                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout d'acteur préféré", MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
                 }
 
-
-                Acteur acteur = lstActeurs.SelectedItem as Acteur;
-                bool acteurIsToAdd = !_acteursPref.Contains(acteur);
-
+                
+                bool acteurIsToAdd = !lstActeursPref.Items.Contains(acteur);
                 if (acteurIsToAdd)
                 {
                     bool acteurAdded = _abo.AjouterActeurFavori(acteur) && _dalAbonne.UpdateItem(_abo);
@@ -275,6 +281,7 @@ namespace MonCine.Vues
 
         #endregion
 
+
         #region realisateurs
 
         private void lstRealisateurs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -283,22 +290,21 @@ namespace MonCine.Vues
             {
                 return;
             }
-
-            if (lstRealisateurs.SelectedItem != null)
+            
+            Realisateur realisateur = lstRealisateurs.SelectedItem as Realisateur;
+            if (realisateur!= null)
             {
-                if (lstRealisateurs.Items.Count >= FPreferencesAbonne.NB_REALISATEUR_MAX)
+                if (lstRealisateursPref.Items.Count >= FPreferencesAbonne.NB_REALISATEUR_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale de réalisateurs en favoris est : {FPreferencesAbonne.NB_REALISATEUR_MAX}. " +
+                        $"Le nombre maximale de réalisateurs en favoris est : {FPreferencesAbonne.NB_REALISATEUR_MAX}" +
                         $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de réalisateur préféré", MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
                 }
 
 
-                Realisateur realisateur = lstRealisateurs.SelectedItem as Realisateur;
                 bool realisateurIsToAdd = !_realisateursPref.Contains(realisateur);
-
                 if (realisateurIsToAdd)
                 {
                     bool realisateurAdded = _abo.AjouterRealisateurFavori(realisateur) && _dalAbonne.UpdateItem(_abo);
@@ -326,7 +332,35 @@ namespace MonCine.Vues
 
         private void lstRealisateursPref_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show("XXX");
+            if (lstRealisateursPref.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            Realisateur realisateur = lstRealisateursPref.SelectedItem as Realisateur;
+
+            bool realisateurCanBeDeleted = _realisateursPref.Contains(realisateur);
+
+            if (realisateurCanBeDeleted)
+            {
+                bool realisateurDeleted = _abo.SupprimerRealisateurFavori(realisateur) && _dalAbonne.UpdateItem(_abo);
+                if (realisateurDeleted)
+                {
+                    _realisateursPref.Remove(realisateur);
+                    lstRealisateursPref.Items.Remove(realisateur);
+                }
+                else
+                {
+                    MessageBox.Show("Erreur de suppression de réalisateur ! ", "Erreur", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show($"Le réalisateur \"{realisateur}\" n'existe pas dans votre liste de préférences.",
+                    "Suppression de réalisateur",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         #endregion

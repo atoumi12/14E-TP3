@@ -32,9 +32,9 @@ namespace MonCineTests
 
             abonneList = new List<Abonne>
             {
-                new Abonne("Abonne 1","Leonardo Di caprio","Denis Villeneuve", 12, uneDate,"Gwenael","Galliot"),
-                new Abonne("Abonne 2","Johnny depp","Denis Villeneuve", 3, uneDate, "Loan", "Rage"),
-                new Abonne("Abonne 3","robert downey jr","Denis Villeneuve", 22, uneDate,"Amhed","Toumi")
+                new Abonne("Gwenael", "Galliot", "Abonne 1", 12, uneDate),
+                new Abonne("Loan", "Rage", "Abonne 2", 3, uneDate),
+                new Abonne("Ahmed", "Toumi", "Abonne 3", 22, uneDate)
             };
         }
 

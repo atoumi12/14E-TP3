@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MongoDB.Bson;
 
@@ -21,7 +22,9 @@ namespace MonCine.Data
 
 
         public List<string> CategoriesPref { get; private set; }
+
         public List<Acteur> ActeursPref { get; set; }
+
         public List<Realisateur> RealisationsPref { get; set; }
 
 
@@ -132,7 +135,6 @@ namespace MonCine.Data
                 }
 
                 bool acteurIsToAdd = ActeursPref.Count < 5 && !ActeursPref.Contains(pActeur);
-
                 if (acteurIsToAdd)
                 {
                     ActeursPref.Add(pActeur);
@@ -219,6 +221,8 @@ namespace MonCine.Data
 
             return true;
         }
+
+
         #endregion
 
 
