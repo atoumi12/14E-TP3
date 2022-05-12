@@ -9,8 +9,14 @@ namespace MonCine.Data
 {
     public class DALAbonne : DAL, ICRUD<Abonne>
     {
-        public string CollectionName { get; set; }
+        #region Const
 
+        public const int NB_CAT_MAX = 3;
+        public const int NB_ACTEUR_MAX = 5;
+        public const int NB_REALISATEUR_MAX = 5;
+
+        #endregion
+        public string CollectionName { get; set; }
 
         public DALAbonne(IMongoClient client = null) : base(client)
         {
@@ -97,5 +103,126 @@ namespace MonCine.Data
 
             return true;
         }
+
+
+        #region Cat
+
+        /// <summary>
+        /// Cette méthode permet d'ajouter une catégorie en favorie.
+        /// </summary>
+        /// <param name="pCategorie"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public bool AjouterCategorieFavorie(Abonne pAbonne, string pCategorieToAdd)
+        {
+            try
+            {
+                pCategorieToAdd = pCategorieToAdd.Trim();
+                bool error = string.IsNullOrWhiteSpace(pCategorieToAdd) || pAbonne.CategoriesPref.Count > DALAbonne.NB_CAT_MAX ||
+                             pAbonne.CategoriesPref.Contains(pCategorieToAdd);
+                if (error)
+                {
+                    throw new ArgumentException("La catégorie ne peut pas être insérée dans la liste des préférences",
+                        "pCategorie");
+                }
+
+                pAbonne.CategoriesPref.Add(pCategorieToAdd);
+                return UpdateItem(pAbonne);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+        }
+
+        /// <summary>
+        /// Permet de supprimer une catégorie favorite
+        /// </summary>
+        /// <param name="pCategorieToDelete">Catégorie à supprimer</param>
+        /// <returns>Vrai si catégorie supprimé</returns>
+        /// <exception cref="Exception"></exception>
+        public bool SupprimerCategorieFavorie(Abonne pAbonne, string pCategorieToDelete)
+        {
+            try
+            {
+                pCategorieToDelete = pCategorieToDelete.Trim();
+                bool error = string.IsNullOrWhiteSpace(pCategorieToDelete) ||
+                             !pAbonne.CategoriesPref.Contains(pCategorieToDelete);
+                if (error)
+                {
+                    throw new ArgumentException("La catégorie ne peut pas être supprimée de la liste des préférences",
+                        "pCategorieToDelete");
+                }
+
+                pAbonne.CategoriesPref.Remove(pCategorieToDelete);
+                return UpdateItem(pAbonne);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+        }
+
+        #endregion
+
+
+        #region Acteur
+
+        /// <summary>
+        /// Permet d'ajouter un acteur favori dans la liste, le nombre maximale est de 5 acteurs.
+        /// </summary>
+        /// <param name="pActeur"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public bool AjouterActeurFavori(Abonne pAbonne, Acteur pActeur)
+        {
+            try
+            {
+                if (pActeur is null)
+                {
+                    throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
+                }
+
+                bool acteurIsToAdd = pAbonne.ActeursPref.Count < DALAbonne.NB_ACTEUR_MAX && !pAbonne.ActeursPref.Contains(pActeur);
+                if (acteurIsToAdd)
+                {
+                    pAbonne.ActeursPref.Add(pActeur);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+            return true;
+        }
+
+        public bool SupprimerActeurFavori(Abonne pAbonne, Acteur pActeur)
+        {
+            try
+            {
+                if (pActeur is null)
+                {
+                    throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
+                }
+
+                bool acteurIsToDelete = pAbonne.ActeursPref.Contains(pActeur);
+                if (acteurIsToDelete)
+                {
+                    pAbonne.ActeursPref.Remove(pActeur);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+            return true;
+        }
+
+        #endregion
+
+
     }
 }
