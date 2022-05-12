@@ -39,7 +39,7 @@ namespace MonCine.Data
         }
 
         public Abonne(string pFirstName, string pLastname, string pUsername,
-            int pnbSeanceAssistees, DateTime pDateAdhesion ) : base(pFirstName,
+            int pnbSeanceAssistees, DateTime pDateAdhesion) : base(pFirstName,
             pLastname)
         {
             Username = pUsername;
@@ -117,7 +117,7 @@ namespace MonCine.Data
         }
 
         #endregion
-        
+
         #region Acteur
 
         /// <summary>
@@ -134,18 +134,22 @@ namespace MonCine.Data
                     throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
                 }
 
-                bool acteurIsToAdd = ActeursPref.Count < 5 && !ActeursPref.Contains(pActeur);
+                bool exists = ActeursPref.Where(a => a.Id == pActeur.Id).ToList().Count > 0;
+                bool acteurIsToAdd = ActeursPref.Count < 5 && !exists;
                 if (acteurIsToAdd)
                 {
                     ActeursPref.Add(pActeur);
+                    return true;
+
                 }
+
             }
             catch (Exception e)
             {
                 throw new Exception($" [{e.GetType()}] : {e.Message}");
             }
 
-            return true;
+            return false;
         }
 
         public bool SupprimerActeurFavori(Acteur pActeur)
@@ -184,7 +188,8 @@ namespace MonCine.Data
                     throw new ArgumentNullException("pRealisateur", "Le réalisateur ne peut pas être null");
                 }
 
-                bool realisateurIsToAdd = RealisationsPref.Count < 5 && !RealisationsPref.Contains(pRealisateur);
+                bool exists = RealisationsPref.Where(r => r.Id == pRealisateur.Id).ToList().Count > 0;
+                bool realisateurIsToAdd = RealisationsPref.Count < 5 && !exists;
 
                 if (realisateurIsToAdd)
                 {
@@ -222,7 +227,6 @@ namespace MonCine.Data
             return true;
         }
 
-
         #endregion
 
 
@@ -235,7 +239,7 @@ namespace MonCine.Data
         public string AfficherActeurs()
         {
             string res = "";
-            ActeursPref.ForEach(acteur=> res += acteur);
+            ActeursPref.ForEach(acteur => res += acteur);
             return res.Length > 0 ? res : "Aucun acteur ajouté en favori";
         }
 
@@ -245,6 +249,7 @@ namespace MonCine.Data
             RealisationsPref.ForEach(r => res += r);
             return res.Length > 0 ? res : "Aucun réalisateur ajouté en favori";
         }
+
         public override string ToString()
         {
             return $"{FirstName} {LastName}";

@@ -221,7 +221,7 @@ namespace MonCine.Vues
                 }
 
                 
-                bool acteurIsToAdd = !lstActeursPref.Items.Contains(acteur);
+                bool acteurIsToAdd = !(_acteursPref.Where(a => a.Id == acteur.Id).ToList().Count > 0);
                 if (acteurIsToAdd)
                 {
                     bool acteurAdded = _abo.AjouterActeurFavori(acteur) && _dalAbonne.UpdateItem(_abo);
@@ -304,7 +304,7 @@ namespace MonCine.Vues
                 }
 
 
-                bool realisateurIsToAdd = !_realisateursPref.Contains(realisateur);
+                bool realisateurIsToAdd = !(_realisateursPref.Where(r => r.Id == realisateur.Id).ToList().Count > 0);
                 if (realisateurIsToAdd)
                 {
                     bool realisateurAdded = _abo.AjouterRealisateurFavori(realisateur) && _dalAbonne.UpdateItem(_abo);
