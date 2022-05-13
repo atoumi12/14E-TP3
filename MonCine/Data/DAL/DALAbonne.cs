@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -115,24 +116,34 @@ namespace MonCine.Data
         /// <exception cref="Exception"></exception>
         public bool AjouterCategorieFavorie(Abonne pAbonne, string pCategorieToAdd)
         {
+            if (pAbonne == null)
+            {
+                throw new ArgumentNullException("pAbonne", "L'abonné ne peut pas être null");
+            }
             try
             {
-                pCategorieToAdd = pCategorieToAdd.Trim();
+                pCategorieToAdd = pCategorieToAdd?.Trim();
                 bool error = string.IsNullOrWhiteSpace(pCategorieToAdd) || pAbonne.CategoriesPref.Count > DALAbonne.NB_CAT_MAX ||
                              pAbonne.CategoriesPref.Contains(pCategorieToAdd);
                 if (error)
                 {
                     throw new ArgumentException("La catégorie ne peut pas être insérée dans la liste des préférences",
-                        "pCategorie");
+                        "pCategorie", null);
                 }
 
                 pAbonne.CategoriesPref.Add(pCategorieToAdd);
                 return UpdateItem(pAbonne);
             }
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException($"{e.Message}");
+            }
             catch (Exception e)
             {
                 throw new Exception($" [{e.GetType()}] : {e.Message}");
             }
+           
+
 
         }
 
@@ -144,9 +155,13 @@ namespace MonCine.Data
         /// <exception cref="Exception"></exception>
         public bool SupprimerCategorieFavorie(Abonne pAbonne, string pCategorieToDelete)
         {
+            if (pAbonne == null)
+            {
+                throw new ArgumentNullException("pAbonne", "L'abonné ne peut pas être null");
+            }
             try
             {
-                pCategorieToDelete = pCategorieToDelete.Trim();
+                pCategorieToDelete = pCategorieToDelete?.Trim();
                 bool error = string.IsNullOrWhiteSpace(pCategorieToDelete) ||
                              !pAbonne.CategoriesPref.Contains(pCategorieToDelete);
                 if (error)
@@ -157,6 +172,10 @@ namespace MonCine.Data
 
                 pAbonne.CategoriesPref.Remove(pCategorieToDelete);
                 return UpdateItem(pAbonne);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException($"{e.Message}");
             }
             catch (Exception e)
             {
@@ -177,52 +196,138 @@ namespace MonCine.Data
         /// <exception cref="ArgumentNullException"></exception>
         public bool AjouterActeurFavori(Abonne pAbonne, Acteur pActeur)
         {
+            if (pAbonne == null)
+            {
+                throw new ArgumentNullException("pAbonne", "L'abonné ne peut pas être null");
+            }
+            if (pActeur is null)
+            {
+                throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
+            }
             try
             {
-                if (pActeur is null)
-                {
-                    throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
-                }
+                bool exists = pAbonne.ActeursPref.Where(a => a.Id == pActeur.Id).ToList().Count > 0;
+                bool acteurIsToAdd = pAbonne.ActeursPref.Count < DALAbonne.NB_ACTEUR_MAX && !exists;
 
-                bool acteurIsToAdd = pAbonne.ActeursPref.Count < DALAbonne.NB_ACTEUR_MAX && !pAbonne.ActeursPref.Contains(pActeur);
                 if (acteurIsToAdd)
                 {
                     pAbonne.ActeursPref.Add(pActeur);
+                    return UpdateItem(pAbonne);
                 }
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"{e.Message}");
             }
             catch (Exception e)
             {
                 throw new Exception($" [{e.GetType()}] : {e.Message}");
             }
 
-            return true;
+            return false;
         }
 
         public bool SupprimerActeurFavori(Abonne pAbonne, Acteur pActeur)
         {
+            if (pAbonne == null)
+            {
+                throw new ArgumentNullException("pAbonne", "L'abonné ne peut pas être null");
+            }
+            if (pActeur is null)
+            {
+                throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
+            }
             try
             {
-                if (pActeur is null)
-                {
-                    throw new ArgumentNullException("pActeur", "L'acteur ne peut pas être null ");
-                }
-
-                bool acteurIsToDelete = pAbonne.ActeursPref.Contains(pActeur);
+                bool acteurIsToDelete = pAbonne.ActeursPref.Where(a => a.Id == pActeur.Id).ToList().Count > 0;
                 if (acteurIsToDelete)
                 {
                     pAbonne.ActeursPref.Remove(pActeur);
+                    return UpdateItem(pAbonne);
                 }
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"{e.Message}");
             }
             catch (Exception e)
             {
                 throw new Exception($" [{e.GetType()}] : {e.Message}");
             }
 
-            return true;
+            return false;
         }
 
         #endregion
 
 
+
+        #region Realisateur
+
+        public bool AjouterRealisateurFavori(Abonne pAbonne, Realisateur pRealisateur)
+        {
+            if (pAbonne == null)
+            {
+                throw new ArgumentNullException("pAbonne", "L'abonné ne peut pas être null");
+            }
+            if (pRealisateur is null)
+            {
+                throw new ArgumentNullException("pRealisateur", "Le réalisateur ne peut pas être null");
+            }
+            try
+            {
+                bool exists = pAbonne.RealisationsPref.Where(r => r.Id == pRealisateur.Id).ToList().Count > 0;
+                bool realisateurIsToAdd = pAbonne.RealisationsPref.Count < DALAbonne.NB_REALISATEUR_MAX && !exists;
+
+                if (realisateurIsToAdd)
+                {
+                    pAbonne.RealisationsPref.Add(pRealisateur);
+                    return UpdateItem(pAbonne);
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"{e.Message}");
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+            return false;
+        }
+
+        public bool SupprimerRealisateurFavori(Abonne pAbonne, Realisateur pRealisateur)
+        {
+            if (pAbonne == null)
+            {
+                throw new ArgumentNullException("pAbonne", "L'abonné ne peut pas être null");
+            }
+            if (pRealisateur is null)
+            {
+                throw new ArgumentNullException("pRealisateur", "Le réalisateur ne peut pas être null");
+            }
+            try
+            {
+                bool realisateurIsToDelete  = pAbonne.RealisationsPref.Where(r => r.Id == pRealisateur.Id).ToList().Count > 0;
+                if (realisateurIsToDelete)
+                {
+                    pAbonne.RealisationsPref.Remove(pRealisateur);
+                    return UpdateItem(pAbonne);
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"{e.Message}");
+            }
+            catch (Exception e)
+            {
+                throw new Exception($" [{e.GetType()}] : {e.Message}");
+            }
+
+            return false;
+        }
+
+        #endregion
     }
 }

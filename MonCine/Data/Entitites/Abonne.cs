@@ -9,12 +9,11 @@ namespace MonCine.Data
 {
     public class Abonne : Personne
     {
-        //private ObjectId Id { get; set; }
         public string Username { get; set; }
         public DateTime DateAdhesion { get; set; }
 
 
-        public bool Recomprenses { get; set; }
+        public bool Recompenses { get; set; }
 
         public bool Reservation { get; set; }
 
@@ -33,13 +32,13 @@ namespace MonCine.Data
             Username = pUsername;
 
 
-            ActeursPref ??= new List<Acteur>();
-            RealisationsPref ??= new List<Realisateur>();
-            CategoriesPref ??= new List<string>();
+            ActeursPref = new List<Acteur>();
+            RealisationsPref = new List<Realisateur>();
+            CategoriesPref = new List<string>();
         }
 
         public Abonne(string pFirstName, string pLastname, string pUsername,
-            int pnbSeanceAssistees, DateTime pDateAdhesion ) : base(pFirstName,
+            int pnbSeanceAssistees, DateTime pDateAdhesion) : base(pFirstName,
             pLastname)
         {
             Username = pUsername;
@@ -48,9 +47,9 @@ namespace MonCine.Data
             FirstName = pFirstName;
             LastName = pLastname;
 
-            ActeursPref ??= new List<Acteur>();
-            RealisationsPref ??= new List<Realisateur>();
-            CategoriesPref ??= new List<string>();
+            ActeursPref = new List<Acteur>();
+            RealisationsPref = new List<Realisateur>();
+            CategoriesPref = new List<string>();
         }
 
 
@@ -59,61 +58,7 @@ namespace MonCine.Data
             throw new NotImplementedException();
         }
 
-       
         
-       
-
-        #region Realisateur
-
-        public bool AjouterRealisateurFavori(Realisateur pRealisateur)
-        {
-            try
-            {
-                if (pRealisateur is null)
-                {
-                    throw new ArgumentNullException("pRealisateur", "Le réalisateur ne peut pas être null");
-                }
-
-                bool realisateurIsToAdd = RealisationsPref.Count < 5 && !RealisationsPref.Contains(pRealisateur);
-
-                if (realisateurIsToAdd)
-                {
-                    RealisationsPref.Add(pRealisateur);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception($" [{e.GetType()}] : {e.Message}");
-            }
-
-            return true;
-        }
-
-        public bool SupprimerRealisateurFavori(Realisateur pRealisateur)
-        {
-            try
-            {
-                if (pRealisateur is null)
-                {
-                    throw new ArgumentNullException("pRealisateur", "Le réalisateur ne peut pas être null ");
-                }
-
-                bool realisateurIsToDelete = RealisationsPref.Contains(pRealisateur);
-                if (realisateurIsToDelete)
-                {
-                    RealisationsPref.Remove(pRealisateur);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception($" [{e.GetType()}] : {e.Message}");
-            }
-
-            return true;
-        }
-
-
-        #endregion
 
 
         public bool EstPrioriaitaire()
@@ -125,7 +70,7 @@ namespace MonCine.Data
         public string AfficherActeurs()
         {
             string res = "";
-            ActeursPref.ForEach(acteur=> res += acteur);
+            ActeursPref.ForEach(acteur => res += acteur);
             return res.Length > 0 ? res : "Aucun acteur ajouté en favori";
         }
 
@@ -135,6 +80,7 @@ namespace MonCine.Data
             RealisationsPref.ForEach(r => res += r);
             return res.Length > 0 ? res : "Aucun réalisateur ajouté en favori";
         }
+
         public override string ToString()
         {
             return $"{FirstName} {LastName}";

@@ -22,14 +22,6 @@ namespace MonCine.Vues
     {
         private string Saluer(Abonne abo) => $"Bonjour, {abo.FirstName} ! Voici vos préférences";
 
-        #region CONST
-
-        private const int NB_CAT_MAX = 3;
-        private const int NB_ACTEUR_MAX = 5;
-        private const int NB_REALISATEUR_MAX = 5;
-
-        #endregion
-
 
         private DALRealisateur _dalRealisateur { get; set; }
         private DALAbonne _dalAbonne { get; set; }
@@ -64,7 +56,6 @@ namespace MonCine.Vues
             InstanceOfItems();
         }
 
-        // TODO: Reparer beug dédoublement valeurs dans les listes.
         private void InstanceOfItems()
         {
             txtSalutations.Text = Saluer(_abo);
@@ -90,7 +81,7 @@ namespace MonCine.Vues
             _acteursPref ??= new List<Acteur>();
             if (_abo.ActeursPref.Count > 0)
             {
-                List<Acteur> acteurs = _abo.ActeursPref.OrderBy(a=>a.FirstName).ToList();
+                List<Acteur> acteurs = _abo.ActeursPref.OrderBy(a => a.FirstName).ToList();
                 acteurs.ForEach(acteur =>
                 {
                     _acteursPref.Add(acteur);
@@ -101,7 +92,7 @@ namespace MonCine.Vues
             // Realisateurs
             _realisateurs = _dalRealisateur.ReadItems();
             lstRealisateurs.ItemsSource = _realisateurs;
-            
+
             _realisateursPref ??= new List<Realisateur>();
             if (_abo.RealisationsPref.Any())
             {
@@ -112,7 +103,6 @@ namespace MonCine.Vues
                     lstRealisateursPref.Items.Add(r);
                 });
             }
-
         }
 
         #region categories
@@ -127,11 +117,12 @@ namespace MonCine.Vues
             if (lstCategories.SelectedItem != null)
             {
                 // Limite de trois catégorie préférée
-                if (lstCategoriesPref.Items.Count >= FPreferencesAbonne.NB_CAT_MAX)
+                if (lstCategoriesPref.Items.Count >= DALAbonne.NB_CAT_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale de catégories en favories est : {FPreferencesAbonne.NB_CAT_MAX}" +
-                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de catégorie préférée", MessageBoxButton.OK,
+                        $"Le nombre maximale de catégories en favories est : {DALAbonne.NB_CAT_MAX}" +
+                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de catégorie préférée",
+                        MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
                 }
@@ -142,7 +133,7 @@ namespace MonCine.Vues
                 bool catToAdd = !string.IsNullOrWhiteSpace(categorie) && !_categoriesPref.Contains(categorie);
                 if (catToAdd)
                 {
-                    bool catAjoutee = _abo.AjouterCategorieFavorie(categorie) && _dalAbonne.UpdateItem(_abo);
+                    bool catAjoutee = _dalAbonne.AjouterCategorieFavorie(_abo, categorie);
                     if (catAjoutee)
                     {
                         _categoriesPref.Add(categorie);
@@ -163,19 +154,14 @@ namespace MonCine.Vues
             }
         }
 
-        private void lstCategoriesPref_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SupprimerCategorieFavorie()
         {
-            if (lstCategoriesPref.SelectedIndex == -1)
-            {
-                return;
-            }
-
             string categorie = lstCategoriesPref.SelectedItem.ToString()?.Trim() ?? "";
 
             bool catCanBeDeleted = !string.IsNullOrWhiteSpace(categorie) && _categoriesPref.Contains(categorie);
             if (catCanBeDeleted)
             {
-                bool catDeleted = _abo.SupprimerCategorieFavorie(categorie) && _dalAbonne.UpdateItem(_abo);
+                bool catDeleted = _dalAbonne.SupprimerCategorieFavorie(_abo, categorie);
 
                 if (catDeleted)
                 {
@@ -196,6 +182,18 @@ namespace MonCine.Vues
             }
         }
 
+        private void btnSupprimerCategorie_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategoriesPref.SelectedIndex == -1)
+            {
+                MessageBox.Show("Veuillez séléctionner une catégorie parmis vos préférées afin de la supprimer",
+                    "Suppression de catégorie", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            SupprimerCategorieFavorie();
+        }
+
         #endregion
 
 
@@ -211,20 +209,20 @@ namespace MonCine.Vues
             Acteur acteur = lstActeurs.SelectedItem as Acteur;
             if (acteur != null)
             {
-                if (_acteursPref.Count >= FPreferencesAbonne.NB_ACTEUR_MAX)
+                if (_acteursPref.Count >= DALAbonne.NB_ACTEUR_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale d'acteurs en favoris est : {FPreferencesAbonne.NB_ACTEUR_MAX}" +
+                        $"Le nombre maximale d'acteurs en favoris est : {DALAbonne.NB_ACTEUR_MAX}" +
                         $"\n\n Veuillez en supprimer pour en rajouter", "Ajout d'acteur préféré", MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
                 }
 
-                
-                bool acteurIsToAdd = !lstActeursPref.Items.Contains(acteur);
+
+                bool acteurIsToAdd = !(_acteursPref.Where(a => a.Id == acteur.Id).ToList().Count > 0);
                 if (acteurIsToAdd)
                 {
-                    bool acteurAdded = _abo.AjouterActeurFavori(acteur) && _dalAbonne.UpdateItem(_abo);
+                    bool acteurAdded = _dalAbonne.AjouterActeurFavori(_abo, acteur);
                     if (acteurAdded)
                     {
                         _acteursPref.Add(acteur);
@@ -245,21 +243,15 @@ namespace MonCine.Vues
             }
         }
 
-
-        private void lstActeursPref_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SupprimerActeurFavori()
         {
-            if (lstActeursPref.SelectedIndex == -1)
-            {
-                return;
-            }
-
             Acteur acteur = lstActeursPref.SelectedItem as Acteur;
 
-            bool acteurCanBeDeleted = _acteursPref.Contains(acteur);
+            bool acteurCanBeDeleted = _acteursPref.Where(a => a.Id == acteur.Id).ToList().Count > 0;
 
             if (acteurCanBeDeleted)
             {
-                bool acteurDeleted = _abo.SupprimerActeurFavori(acteur) && _dalAbonne.UpdateItem(_abo);
+                bool acteurDeleted = _dalAbonne.SupprimerActeurFavori(_abo, acteur);
                 if (acteurDeleted)
                 {
                     _acteursPref.Remove(acteur);
@@ -279,6 +271,19 @@ namespace MonCine.Vues
             }
         }
 
+
+        private void btnSupprimerActeur_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstActeursPref.SelectedIndex == -1)
+            {
+                MessageBox.Show("Veuillez séléctionner un acteur parmis vos préférés afin de le supprimer",
+                    "Suppression d'acteur", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            SupprimerActeurFavori();
+        }
+
         #endregion
 
 
@@ -290,24 +295,25 @@ namespace MonCine.Vues
             {
                 return;
             }
-            
+
             Realisateur realisateur = lstRealisateurs.SelectedItem as Realisateur;
-            if (realisateur!= null)
+            if (realisateur != null)
             {
-                if (lstRealisateursPref.Items.Count >= FPreferencesAbonne.NB_REALISATEUR_MAX)
+                if (lstRealisateursPref.Items.Count >= DALAbonne.NB_REALISATEUR_MAX)
                 {
                     MessageBox.Show(
-                        $"Le nombre maximale de réalisateurs en favoris est : {FPreferencesAbonne.NB_REALISATEUR_MAX}" +
-                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de réalisateur préféré", MessageBoxButton.OK,
+                        $"Le nombre maximale de réalisateurs en favoris est : {DALAbonne.NB_REALISATEUR_MAX}" +
+                        $"\n\n Veuillez en supprimer pour en rajouter", "Ajout de réalisateur préféré",
+                        MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
                 }
 
 
-                bool realisateurIsToAdd = !_realisateursPref.Contains(realisateur);
+                bool realisateurIsToAdd = !(_realisateursPref.Where(r => r.Id == realisateur.Id).ToList().Count > 0);
                 if (realisateurIsToAdd)
                 {
-                    bool realisateurAdded = _abo.AjouterRealisateurFavori(realisateur) && _dalAbonne.UpdateItem(_abo);
+                    bool realisateurAdded = _dalAbonne.AjouterRealisateurFavori(_abo, realisateur);
                     if (realisateurAdded)
                     {
                         _realisateursPref.Add(realisateur);
@@ -329,21 +335,15 @@ namespace MonCine.Vues
         }
 
 
-
-        private void lstRealisateursPref_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SupprimerRealisateurFavori()
         {
-            if (lstRealisateursPref.SelectedIndex == -1)
-            {
-                return;
-            }
-
             Realisateur realisateur = lstRealisateursPref.SelectedItem as Realisateur;
 
-            bool realisateurCanBeDeleted = _realisateursPref.Contains(realisateur);
+            bool realisateurCanBeDeleted = _realisateursPref.Where(r => r.Id == realisateur.Id).ToList().Count > 0;
 
             if (realisateurCanBeDeleted)
             {
-                bool realisateurDeleted = _abo.SupprimerRealisateurFavori(realisateur) && _dalAbonne.UpdateItem(_abo);
+                bool realisateurDeleted = _dalAbonne.SupprimerRealisateurFavori(_abo, realisateur);
                 if (realisateurDeleted)
                 {
                     _realisateursPref.Remove(realisateur);
@@ -363,7 +363,19 @@ namespace MonCine.Vues
             }
         }
 
-        #endregion
 
+        private void btnSupprimerRealisateur_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstRealisateursPref.SelectedIndex == -1)
+            {
+                MessageBox.Show("Veuillez séléctionner un réalisateur parmis vos préférés afin de le supprimer",
+                    "Suppression d'un réalisateur", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            SupprimerRealisateurFavori();
+        }
+
+        #endregion
     }
 }
