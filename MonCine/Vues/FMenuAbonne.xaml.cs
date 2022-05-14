@@ -39,7 +39,7 @@ namespace MonCine.Vues
 
         private void BtnPreference_Click(object sender, RoutedEventArgs e)
         {
-            FPreferencesAbonne prf = new FPreferencesAbonne(new DALRealisateur(), new DALAbonne(), new DALActeur());
+            FPreferencesAbonne prf = new FPreferencesAbonne(CurrentUser ,new DALRealisateur(), new DALAbonne(), new DALActeur());
             prf.Show();
         }
 

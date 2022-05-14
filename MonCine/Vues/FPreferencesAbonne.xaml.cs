@@ -26,6 +26,8 @@ namespace MonCine.Vues
         private DALRealisateur _dalRealisateur { get; set; }
         private DALAbonne _dalAbonne { get; set; }
         private DALActeur _dalActeur { get; set; }
+        private Abonne _abo { get; set; }
+
 
         #region Lists
 
@@ -35,13 +37,12 @@ namespace MonCine.Vues
         private List<Acteur> _acteursPref { get; set; }
         private List<Realisateur> _realisateurs { get; set; }
         private List<Realisateur> _realisateursPref { get; set; }
-
-
-        private Abonne _abo { get; set; }
-
         #endregion
+        
+        
 
-        public FPreferencesAbonne(DALRealisateur pDalRealisateur, DALAbonne pDalAbonne, DALActeur pDalActeur)
+
+        public FPreferencesAbonne(Abonne pAbo , DALRealisateur pDalRealisateur, DALAbonne pDalAbonne, DALActeur pDalActeur)
         {
             InitializeComponent();
 
@@ -49,9 +50,7 @@ namespace MonCine.Vues
             _dalAbonne = pDalAbonne;
             _dalActeur = pDalActeur;
 
-            // TODO: Choix de l'abonné
-            List<Abonne> a = pDalAbonne.ReadItems();
-            _abo = a[0];
+            _abo = pAbo;
 
             InstanceOfItems();
         }
