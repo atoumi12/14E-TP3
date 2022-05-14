@@ -25,6 +25,29 @@ namespace MonCine.Data
             AddDefaultAbonnes();
         }
 
+        public bool AddItem(Abonne pabonne)
+        {
+            if (pabonne is null)
+            {
+                throw new ArgumentNullException("pFilm", "Le film ne peut pas être null");
+            }
+
+            try
+            {
+                var collection = database.GetCollection<Abonne>(CollectionName);
+                collection.InsertOne(pabonne);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible d'ajouter le film {pabonne.FirstName} dans la collection {ex.Message}",
+                    "Erreur d'ajout", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                throw;
+            }
+
+            return true;
+        }
+
         private async void AddDefaultAbonnes()
         {
             DateTime uneDate = new DateTime();
@@ -69,12 +92,6 @@ namespace MonCine.Data
             }
 
             return abonnes;
-        }
-
-
-        public bool AddItem(Abonne pObj)
-        {
-            throw new NotImplementedException();
         }
 
         public bool DeleteItem(Abonne pObj)
@@ -142,8 +159,6 @@ namespace MonCine.Data
             {
                 throw new Exception($" [{e.GetType()}] : {e.Message}");
             }
-           
-
 
         }
 

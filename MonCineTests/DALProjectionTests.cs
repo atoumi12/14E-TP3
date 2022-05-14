@@ -21,8 +21,15 @@ namespace MonCineTests
         private List<Projection> projectionsList;
         private Mock<IAsyncCursor<Projection>> projectionCursor;
 
+        private List<Place> lstPlaces = new List<Place>();
+        private Place place1 = new Place(1);
+        private Place place2 = new Place(2);
+
+
         public DALProjectionTests()
         {
+            lstPlaces.Add(place1);
+            lstPlaces.Add(place2);
             mongoClient = new Mock<IMongoClient>();
             mongodb = new Mock<IMongoDatabase>();
 
@@ -30,12 +37,14 @@ namespace MonCineTests
             projectionCursor = new Mock<IAsyncCursor<Projection>>();
 
 
+
+
             projectionsList = new List<Projection>
             {
-                new Projection(new Salle(1), new Film(true,"Film1 Dal Projection"), new DateTime(2022, 01,01)),
-                new Projection(new Salle(2), new Film(true,"Film1 Dal Projection"), new DateTime(2022, 04,20)),
-                new Projection(new Salle(3), new Film(true,"Film2 Dal Projection"), new DateTime(2022, 04,20)),
-                new Projection(new Salle(4), new Film(true,"Film2 Dal Projection"), DateTime.Now)
+                new Projection(new Salle(1,lstPlaces), new Film(true,"Film1 Dal Projection"), new DateTime(2022, 01,01)),
+                new Projection(new Salle(2,lstPlaces), new Film(true,"Film1 Dal Projection"), new DateTime(2022, 04,20)),
+                new Projection(new Salle(3,lstPlaces), new Film(true,"Film2 Dal Projection"), new DateTime(2022, 04,20)),
+                new Projection(new Salle(4,lstPlaces), new Film(true,"Film2 Dal Projection"), DateTime.Now)
             };
 
         }
@@ -68,7 +77,7 @@ namespace MonCineTests
 
             var dal = new DALProjection(mongoClient.Object);
 
-            Projection projection = new Projection(new Salle(100), new Film("Film DAL Projection Test"), DateTime.Now);
+            Projection projection = new Projection(new Salle(100, lstPlaces), new Film("Film DAL Projection Test"), DateTime.Now);
 
             // Act
             bool result = dal.AddItem(projection);

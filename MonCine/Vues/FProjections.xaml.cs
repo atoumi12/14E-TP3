@@ -66,6 +66,7 @@ namespace MonCine.Vues
             Film film = (Film)FilmCombobox.SelectedItem;
             DateTime date = DatePickerProjection.SelectedDate.Value;
 
+            film.SurAffiche = true;
             FilmCombobox.SelectedIndex = -1;
             SalleCombobox.SelectedIndex = -1;
             DatePickerProjection.SelectedDate = null;

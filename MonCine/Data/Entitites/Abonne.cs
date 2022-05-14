@@ -11,30 +11,20 @@ namespace MonCine.Data
     {
         public string Username { get; set; }
         public DateTime DateAdhesion { get; set; }
-
-
-        public bool Recompenses { get; set; }
-
-        public bool Reservation { get; set; }
-
+        public List<Projection> Reservations { get; set; }
         public int nbSeanceAssistees { get; set; }
-
-
         public List<string> CategoriesPref { get; private set; }
-
         public List<Acteur> ActeursPref { get; set; }
-
         public List<Realisateur> RealisationsPref { get; set; }
 
 
         public Abonne(string pUsername)
         {
             Username = pUsername;
-
-
             ActeursPref = new List<Acteur>();
             RealisationsPref = new List<Realisateur>();
             CategoriesPref = new List<string>();
+            Reservations = new List<Projection>();
         }
 
         public Abonne(string pFirstName, string pLastname, string pUsername,
@@ -46,7 +36,7 @@ namespace MonCine.Data
             DateAdhesion = pDateAdhesion;
             FirstName = pFirstName;
             LastName = pLastname;
-
+            Reservations = new List<Projection>();
             ActeursPref = new List<Acteur>();
             RealisationsPref = new List<Realisateur>();
             CategoriesPref = new List<string>();

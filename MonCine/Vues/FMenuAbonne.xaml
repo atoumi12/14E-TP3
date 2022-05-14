@@ -1,0 +1,38 @@
+﻿<Page x:Class="MonCine.Vues.FMenuAbonne"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MonCine.Vues"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FMenuAbonne">
+
+    <Grid ShowGridLines="False" Background="AliceBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="30" Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown"/>
+
+
+        <TextBlock x:Name="userName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                   FontSize="20"></TextBlock>
+        
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="330">
+            <Button Content="Preference" x:Name="btn_preference"  Width="250" Height="50px"
+                    FontSize="20" Click="BtnPreference_Click"></Button>
+            <Button Content="Voire les films a l'affiche" Width="250" Height="50px" Margin="10,10,10,40" 
+                    FontSize="20" Click="VoireFilm_Click"></Button>
+        </StackPanel>
+
+    </Grid>
+</Page>

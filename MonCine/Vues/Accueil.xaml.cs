@@ -30,10 +30,18 @@ namespace MonCine.Vues
             NavigationService?.Navigate(fadmin);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+
+
+        private void ButtonAbonne_Click(object sender, RoutedEventArgs e)
         {
-            FPreferencesAbonne prf = new FPreferencesAbonne(new DALRealisateur(), new DALAbonne(), new DALActeur());
-            prf.Show();
+
+            DALAbonne dALAbonne = new DALAbonne();
+            List<Abonne> lstAbo = dALAbonne.ReadItems();
+            Abonne abonne = lstAbo[0];
+
+            FChoixAbonne fchoixabo = new FChoixAbonne(new DALAbonne());
+            NavigationService?.Navigate(fchoixabo);
+
         }
     }
 }

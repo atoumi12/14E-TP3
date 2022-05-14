@@ -19,11 +19,14 @@ namespace MonCine.Data
 
         private void AddDefaultsalle()
         {
+
+            List<Place> listDePlaceGenerique = CreeListeDePlace();
+
             List<Salle> salles = new List<Salle>
             {
-                new Salle(12),
-                new Salle(24),
-                new Salle(31)
+                new Salle(12,listDePlaceGenerique),
+                new Salle(24,listDePlaceGenerique),
+                new Salle(31,listDePlaceGenerique)
             };
 
             try
@@ -43,7 +46,24 @@ namespace MonCine.Data
             }
         }
 
+        public List<Place> CreeListeDePlace()
+        {
+            List<Place> lstPlace = new List<Place>();
+            Place Place1 = new Place(0);
+            Place Place2 = new Place(1);
+            Place Place3 = new Place(2);
+            Place Place4 = new Place(3);
+            Place Place5 = new Place(4);
+            Place Place6 = new Place(5);
+            lstPlace.Add(Place1);
+            lstPlace.Add(Place2);
+            lstPlace.Add(Place3);
+            lstPlace.Add(Place4);
+            lstPlace.Add(Place5);
+            lstPlace.Add(Place6);
 
+            return lstPlace;
+        }
 
         public List<Salle> ReadItems()
         {
@@ -62,7 +82,6 @@ namespace MonCine.Data
 
             return salles;
         }
-
 
 
         public bool AddItem(Salle pSalle)
