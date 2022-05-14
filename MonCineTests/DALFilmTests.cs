@@ -20,6 +20,10 @@ namespace MonCineTests
         private List<Film> filmList;
         private Mock<IAsyncCursor<Film>> filmCursor;
 
+        private List<Place> lstPlaces = new List<Place>();
+        private Place place1 = new Place(1);
+        private Place place2 = new Place(2);
+
         public DALFilmTests()
         {
             mongoClient = new Mock<IMongoClient>();
@@ -206,12 +210,15 @@ namespace MonCineTests
         [Fact]
         public void AddProjectionDate_AjouterDateProjection_ReturnTrueIfFilmUpdated()
         {
+            lstPlaces.Add(place1);
+            lstPlaces.Add(place2);
+
             // Arrange
             InitializeMongoFilmCollection();
 
             var dal = new DALFilm(mongoClient.Object);
             Film film = filmList[0];
-            Projection projection = new Projection(new Salle(20), film, DateTime.Now);
+            Projection projection = new Projection(new Salle(20,lstPlaces), film, DateTime.Now);
 
             // Act
             var result = dal.AddProjectionDate(projection);

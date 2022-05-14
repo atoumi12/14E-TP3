@@ -18,8 +18,15 @@ namespace MonCineTests
         private List<Salle> salleList;
         private Mock<IAsyncCursor<Salle>> salleCursor;
 
+        private List<Place> lstPlaces = new List<Place>();
+        private Place place1 = new Place(1);
+        private Place place2 = new Place(2);
+
         public DALSalleTests()
         {
+            lstPlaces.Add(place1);
+            lstPlaces.Add(place2);
+
             mongoClient = new Mock<IMongoClient>();
             mongodb = new Mock<IMongoDatabase>();
 
@@ -29,8 +36,8 @@ namespace MonCineTests
 
             salleList= new List<Salle>
             {
-                new Salle(20),
-                new Salle(25),
+                new Salle(20,lstPlaces),
+                new Salle(25,lstPlaces),
             };
         }
 
