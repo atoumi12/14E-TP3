@@ -10,22 +10,27 @@
 
     <Grid Background="AliceBlue">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="40" />
 
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="20" />
             <ColumnDefinition Width="*" />
 
-            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="40" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="40" />
 
             <RowDefinition Height="100" />
+            <RowDefinition Height="150" />
             <RowDefinition Height="*" />
 
-            <RowDefinition Height="20" />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
+
+        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="30"
+               Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown" />
+
 
         <GroupBox Header="Type de récompenses"
                   Grid.Row="1" Grid.Column="1" FontWeight="DemiBold">
@@ -41,7 +46,7 @@
 
         <!--Reprojection-->
         <GroupBox x:Name="grbReprojection" Header="Reprojection" FontSize="14" FontWeight="DemiBold"
-                  Grid.Row="1" Grid.RowSpan="2" Grid.Column="3">
+                  Grid.Row="1" Grid.RowSpan="2" Grid.Column="3" Visibility="Hidden">
             <StackPanel Orientation="Horizontal">
 
                 <ListView x:Name="lstReprojections" Width="200" 
@@ -53,7 +58,7 @@
 
                     <StackPanel Orientation="Vertical">
                         <ListView x:Name="lstAbonnesReprojection" FontSize="10"
-                                  Margin="2" Height="150" SelectionMode="Multiple"></ListView>
+                                  Margin="2" Height="150" SelectionMode="Single"></ListView>
 
 
                         <TextBlock x:Name="txtAucunAbonneReprojection" FontSize="10"

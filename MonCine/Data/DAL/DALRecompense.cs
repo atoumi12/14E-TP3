@@ -15,45 +15,46 @@ namespace MonCine.Data
         public DALRecompense(IMongoClient client = null) : base(client)
         {
             CollectionName = "Recompense";
-            AddDefaultRecompenses();
         }
 
-        private async void AddDefaultRecompenses()
-        {
-            List<Recompense> recompenses = new List<Recompense>
-            {
-                new Recompense(TypeRecompense.AvantPremiere),
-                new Recompense(TypeRecompense.Reprojection),
-                new Recompense(TypeRecompense.AvantPremiere),
-                new Recompense(TypeRecompense.Reprojection),
-            };
 
+        public List<Recompense> ReadItems()
+        {
             try
             {
                 var collection = database.GetCollection<Recompense>(CollectionName);
-                if (collection.CountDocuments(Builders<Recompense>.Filter.Empty) <= 0)
-                {
-                    await collection.InsertManyAsync(recompenses);
-                }
+                return collection.FindSync(Builders<Recompense>.Filter.Empty).ToList();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Impossible d'ajouter des récompenses zdans la collection " + ex.Message, "Erreur",
+                MessageBox.Show("Impossible de récupérer les récompenses de la collection " + ex.Message, "Erreur",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 throw;
             }
         }
 
-
-        public List<Recompense> ReadItems()
+        public bool AddItem(Recompense pRecompense)
         {
-            throw new NotImplementedException();
-        }
+            if (pRecompense is null)
+            {
+                throw new ArgumentNullException("pRecompense", "La récompense ne peut pas être nulle");
+            }
 
-        public bool AddItem(Recompense pObj)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                var collection = database.GetCollection<Recompense>(CollectionName);
+                collection.InsertOne(pRecompense);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'ajouter des récompenses dans la collection " + ex.Message, "Erreur",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                throw;
+            }
+
+            return true;
         }
 
         public bool UpdateItem(Recompense pRecompense)
@@ -65,11 +66,10 @@ namespace MonCine.Data
 
             try
             {
-
                 var collection = database.GetCollection<Recompense>(CollectionName);
 
-                // If exists
-                var filter = Builders<Recompense>.Filter.Eq(r => r.Id , pRecompense.Id);
+                // If does not exists !!
+                var filter = Builders<Recompense>.Filter.Eq(r => r.Id, pRecompense.Id);
                 bool exists = collection.FindSync(filter).ToList().Count > 0;
                 if (!exists)
                 {
@@ -80,7 +80,9 @@ namespace MonCine.Data
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Impossible d'ajouter des récompenses zdans la collection " + ex.Message, "Erreur",
+                MessageBox.Show(
+                    $"Impossible de mettte à jouer la récompense {pRecompense} dans la collection " + ex.Message,
+                    "Erreur",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 throw;
@@ -102,10 +104,12 @@ namespace MonCine.Data
             {
                 throw new ArgumentNullException("pAbonne", "L'abonné ne peut pas être nul");
             }
+
             if (pFilm is null)
             {
                 throw new ArgumentNullException("pFilm", "Le film ne peut pas être nul");
             }
+
             if (pRecompense is null)
             {
                 throw new ArgumentNullException("pRecompense",
@@ -114,23 +118,40 @@ namespace MonCine.Data
 
             try
             {
-                var collection = database.GetCollection<Recompense>(CollectionName);
+                if (AbonneAdmissibleRecompense(pRecompense.Type, pAbonne, pFilm))
+                {
+                    pRecompense.Abonne = pAbonne;
+                    pRecompense.Film = pFilm;
+                    return AddItem(pRecompense);
+                }
 
-                // Récuperer la récompense consernée
-                var filter = Builders<Recompense>.Filter.Eq(r => r.Id, pRecompense.Id);
-                Recompense recompense = collection.FindSync(filter).ToList()[0];
-                recompense.Abonne = pAbonne;
-                recompense.Film = pFilm;
-                return UpdateItem(recompense);
+                return false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Impossible d'ajouter des récompenses dans la collection " + ex.Message, "Erreur",
+                MessageBox.Show(
+                    $"Impossible d'assigner la récompense {pRecompense} aux éléments attribués" + ex.Message, "Erreur",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 throw;
             }
+        }
 
+
+        public bool AbonneAdmissibleRecompense(TypeRecompense pTypeRecompense, Abonne pAbonne, Film pFilm)
+        {
+            List<Recompense> recompenses = ReadItems();
+
+            bool admissbile = true;
+            recompenses.ForEach(r =>
+            {
+                if (r.Type == pTypeRecompense && r.Abonne.Id == pAbonne.Id && r.Film.Id == pFilm.Id)
+                {
+                    admissbile = false;
+                }
+            });
+
+            return admissbile;
         }
     }
 }

@@ -19,7 +19,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Grid.Column="0" Source="/Ressources/Images/Logo.png"/>
+        
+        <Image Grid.Row="0" Grid.Column="0" Source="/Ressources/Images/Logo.png" 
+               MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+
         <Label Grid.Row="0" Grid.Column="1" Content="Mon ciné" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontFamily="MV Boli" FontSize="36" FontWeight="Bold"/>
         <Border Grid.Row="1" Grid.Column="1" BorderThickness="2,2,2,2" 
                 Height="350" Opacity="0.3" Margin="50,0,50,0">

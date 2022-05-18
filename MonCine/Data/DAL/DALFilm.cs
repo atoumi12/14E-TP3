@@ -158,9 +158,9 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Film>(CollectionName);
-                pProjection.Film.AjouterDateProjection(pProjection);
+                bool res = pProjection.Film.AjouterDateProjection(pProjection);
 
-                UpdateItem(pProjection.Film);
+                return res && UpdateItem(pProjection.Film);
             }
             catch (Exception ex)
             {
@@ -169,7 +169,6 @@ namespace MonCine.Data
                 throw;
             }
 
-            return true;
         }
     }
 }
