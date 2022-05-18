@@ -11,17 +11,21 @@
     <Grid ShowGridLines="False" Background="AliceBlue" Margin="2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="0"/>
             <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="20"/>
 
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="300"/>
+
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
@@ -29,14 +33,48 @@
 
         <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="30" Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown"/>
 
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="Films a l'affiche :"
+        <TextBlock Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Text="Films a l'affiche :"
                    FontWeight="Bold" FontSize="20"></TextBlock>
 
-        <ListView x:Name="LstFilms" Grid.Row="1" Grid.Column="1" Width="auto"
+        <GroupBox Header="films" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3"
+                  FontSize="15" Margin="10,0,0,0" Padding="10,10,10,10">
+            <ListView x:Name="LstFilms" Grid.Row="1" Grid.Column="1" Width="auto"
                   Grid.RowSpan="3" Grid.ColumnSpan="2"
                   Margin="0,0,0,0" SelectionChanged="LstFilms_SelectionChanged">
 
-        </ListView>
+            </ListView>
+        </GroupBox>
+
+        <GroupBox Header="séances" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="3"
+                  FontSize="15" Margin="10,0,0,0">
+
+            <StackPanel Orientation="Vertical" >
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,200">
+                    <StackPanel Orientation="Horizontal" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <ComboBox x:Name="LstProjections" SelectionChanged="LstProjections_SelectionChanged"
+                    IsSynchronizedWithCurrentItem="True" FontSize="11.5" 
+                    SelectedIndex="0" Width="300" Margin="10,10,10,10">
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="1" HorizontalAlignment="Center" VerticalAlignment="top">
+                        <Button x:Name="btn_reservation" Width="100"
+                    Margin="10,10,10,10"  Grid.RowSpan="1" Grid.ColumnSpan="1" FontSize="12"
+                    Click="Button_Click">reserver la place</Button>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <StackPanel>
+                    <TextBlock x:Name="place_restante" Grid.Row="2"  TextWrapping="WrapWithOverflow"   FontSize="20" Margin="10,10,10,10"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+
+        </GroupBox>
+
+
+
 
 
     </Grid>
