@@ -52,7 +52,7 @@
                             Padding="0,-2,1,1" Click="btnSupprimerCategorie_Click" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="175">
                     <ListView x:Name="lstCategories" Width="110"
                               Margin="2" FontSize="12" SelectionChanged="lstCategories_SelectionChanged">
                     </ListView>
@@ -75,7 +75,7 @@
                             Padding="0,-2,1,1" Click="btnSupprimerActeur_Click" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <ListView x:Name="lstActeurs" Width="110" FontSize="11"
+                    <ListView x:Name="lstActeurs" Width="110" Height="175" FontSize="11"
                               Margin="2" SelectionChanged="lstActeurs_SelectionChanged">
                     </ListView>
 
@@ -92,13 +92,13 @@
 
             <StackPanel Orientation="Vertical">
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" >
                     <Button x:Name="btnSupprimerRealisateur" Content="x" Background="#FFFBD5D5" Margin="0,0,0,5"
                             FontSize="9" Width="15" Height="15" Foreground="#FFFD0505" BorderBrush="{x:Null}"
                             Padding="0,-2,1,1" Click="btnSupprimerRealisateur_Click" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Height="175">
                     <ListView x:Name="lstRealisateurs" Width="110" FontSize="11"
                               Margin="2" SelectionChanged="lstRealisateurs_SelectionChanged">
                     </ListView>
