@@ -51,7 +51,7 @@ namespace MonCine.Vues
 
         private void btn_noterFilm(object sender, RoutedEventArgs e)
         {
-            FNoterFilm pnf = new FNoterFilm(CurrentUser, new DALAbonne());
+            FNoterFilm pnf = new FNoterFilm(CurrentUser, new DALAbonne(), new DALProjection());
             NavigationService?.Navigate(pnf);
         }
     }

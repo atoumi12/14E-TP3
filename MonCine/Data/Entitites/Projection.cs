@@ -12,6 +12,7 @@ namespace MonCine.Data
         public DateTime DateDebut { get; set; }
         public DateTime DateFin { get; set; }
         public Film Film { get; set; }
+        public Boolean Note { get; set; }
 
 
         public Projection(Salle salle, Film film, DateTime pDate)

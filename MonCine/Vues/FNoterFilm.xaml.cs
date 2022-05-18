@@ -22,18 +22,21 @@ namespace MonCine.Vues
         private List<Film> filmsVueParAbo;
         private Abonne currentUser;
         private DALAbonne DALabonne;
+        private DALProjection DALprojection;
         private Film filmNoter;
         private int note;
 
 
-        public FNoterFilm(Abonne user, DALAbonne dalAbonne)
+        public FNoterFilm(Abonne user, DALAbonne dalAbonne, DALProjection dalProjection)
         {
             InitializeComponent();
             currentUser = user;
             filmsVueParAbo = new List<Film>();
         
             DALabonne = dalAbonne;
-            
+            DALprojection = dalProjection;
+
+
             initList();
         }
 
@@ -41,7 +44,7 @@ namespace MonCine.Vues
         {
             foreach (Projection reservation in currentUser.Reservations)
             {
-                if (reservation.DateDebut < DateTime.Now)
+                if (reservation.DateDebut < DateTime.Now && reservation.Note == false)
                 {
                     filmsVueParAbo.Add(reservation.Film);
                 }
@@ -69,7 +72,7 @@ namespace MonCine.Vues
                 sectionNote.Visibility = Visibility.Hidden;
             }
 
-            
+          
         }
 
         private void btn_noterFilm_Click(object sender, RoutedEventArgs e)
@@ -79,13 +82,26 @@ namespace MonCine.Vues
             filmNoter.Notes ??= new List<int>();
             filmNoter.Notes.Add(note);
             filmNoter.NoteMoyenne = filmNoter.CalculerMoyennesNotes();
-            
+       
             bool res = dalFilm.UpdateItem(filmNoter);
             if (res)
             {
+                currentUser.Reservations.ForEach(r => {
+                    if (r.Film == filmNoter)
+                    {
+                        r.Note = true;
+                        DALabonne.UpdateItem(currentUser);
+                    }
+                });
+
+
                 MessageBox.Show("La note a été attribuée avec succès !" , "Noter un film", MessageBoxButton.OK, MessageBoxImage.Information);
                 LstFilms.SelectedIndex = -1;
+
+                filmsVueParAbo.Remove(filmNoter);
+                LstFilms.Items.Refresh();
             }
+
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
