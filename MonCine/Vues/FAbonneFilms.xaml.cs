@@ -44,14 +44,13 @@ namespace MonCine.Vues
 
             CurrentUser = currentUser;
             initList();
-            refreshListBox();
         }
 
         private void initList()
         {
             foreach (Film unFilm in films)
             {
-                if (unFilm.SurAffiche == true)
+                if (unFilm.SurAffiche)
                 {
                     filmsAlAffiche.Add(unFilm);
                 }
@@ -60,14 +59,7 @@ namespace MonCine.Vues
 
 
         }
-        private void refreshListBox()
-        {
-            if (LstProjections.Items.Count > 0)
-            {
-                LstProjections.Items.Clear();
-            }
-            LstProjections.ItemsSource = projections;
-        }
+        
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -77,14 +69,13 @@ namespace MonCine.Vues
 
         private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            grpSeances.Visibility = Visibility.Visible;
             Film unFilm = LstFilms.SelectedItem as Film;
 
             projections = DalProjection.GetProjectionsOfFilm(unFilm);
+            LstProjections.ItemsSource = projections;
 
-            refreshListBox();
 
-            //FAbonneReservation freserv = new FAbonneReservation(new DALAbonne(), new DALProjection(),new DALSalle(), unFilm, CurrentUser);
-            //NavigationService?.Navigate(freserv);
         }
 
         private void LstProjections_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -126,13 +117,16 @@ namespace MonCine.Vues
                 GestionBtnReservation();
 
                 MessageBox.Show(
-                "Votre reservation a bien ete effectuer", "Reservation d'une seance", MessageBoxButton.OK,
+                "Votre reservation a bien été effectuée", "Réservation d'une séance", MessageBoxButton.OK,
                 MessageBoxImage.Information);
+
+                grpSeances.Visibility = Visibility.Hidden;
+
             }
             else
             {
                 MessageBox.Show(
-                "Vous avez deja une reservation pour cette projection", "Reservation d'une seance", MessageBoxButton.OK,
+                "Vous avez déjà une réservation pour cette projection", "Réservation d'une séance", MessageBoxButton.OK,
                 MessageBoxImage.Warning);
             }
 
@@ -145,11 +139,11 @@ namespace MonCine.Vues
                 if (uneProjection.Salle.Places != null)
                 {
                     nbPlaceRestante = uneProjection.Salle.Places.Count;
-                    place_restante.Text = "Il reste " + nbPlaceRestante.ToString() + " places dispoonible pour la seance.";
+                    place_restante.Text = "Il reste " + nbPlaceRestante + " place(s) disponible(s) pour la séance.";
                 }
                 else
                 {
-                    place_restante.Text = "Il n'y a pas de place disponible pour cette sceance.";
+                    place_restante.Text = "Il n'y a pas de places disponibles pour cette séance.";
                 }
 
             }
