@@ -65,14 +65,10 @@ namespace MonCine.Vues
 
         private bool verifierSiDejaReserberParAbonne(Projection uneProjection)
         {
-
             if (CurrentUser.Reservations.Count > 0 )
             {
-                bool countaiReservation = CurrentUser.Reservations.Where(a => a.Id == uneProjection.Id).ToList().Count > 0;
-                if (countaiReservation)
-                {
-                    return true;
-                }
+                bool contaiReservation = CurrentUser.Reservations.Where(a => a.Id == uneProjection.Id).ToList().Count > 0;
+                return contaiReservation;
             }
 
             return false;
@@ -103,7 +99,7 @@ namespace MonCine.Vues
 
             if (projectionsNonVue.Count == 0)
             {
-                place_restante.Text = "Il ne reste aucunes seance de disponible";
+                place_restante.Text = "Vous avez déjà réservé une place pour cette projection";
                 btn_reservation.IsEnabled = false;
             }
             LstProjections.ItemsSource = projectionsNonVue;
