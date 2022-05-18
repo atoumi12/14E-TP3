@@ -35,7 +35,7 @@
         <ListView x:Name="LstAbonnes" Grid.Row="1" Grid.Column="2" Width="auto"
                   Grid.RowSpan="3"
                   Margin="0,0,0,0" SelectionChanged="LstAbonnes_SelectionChanged">
-            
+    
         </ListView>
 
 

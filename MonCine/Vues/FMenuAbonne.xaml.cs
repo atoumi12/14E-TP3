@@ -32,7 +32,7 @@ namespace MonCine.Vues
 
         private void VoireFilm_Click(object sender, RoutedEventArgs e)
         {
-            FAbonneFilms fAbonneFilms = new FAbonneFilms(new DALFilm (), CurrentUser);
+            FAbonneFilms fAbonneFilms = new FAbonneFilms(new DALFilm (), CurrentUser, new DALProjection(), new DALAbonne());
            
             NavigationService?.Navigate(fAbonneFilms);
         }
@@ -47,6 +47,12 @@ namespace MonCine.Vues
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             NavigationService?.GoBack();
+        }
+
+        private void btn_noterFilm(object sender, RoutedEventArgs e)
+        {
+            FNoterFilm pnf = new FNoterFilm(CurrentUser, new DALAbonne());
+            NavigationService?.Navigate(pnf);
         }
     }
 }

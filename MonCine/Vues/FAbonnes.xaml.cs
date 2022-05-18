@@ -28,7 +28,7 @@ namespace MonCine.Vues
             Dal = dal;
             abonnes = Dal.ReadItems();
             LstAbonnes.ItemsSource = abonnes;
-
+            LstAbonnes.UnselectAll();
         }
 
 
@@ -44,6 +44,7 @@ namespace MonCine.Vues
 
             FAbonne fabonne = new FAbonne(unAbonne);
             NavigationService?.Navigate(fabonne);
+            LstAbonnes.SelectedItem = null;
         }
 
 

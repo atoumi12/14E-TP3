@@ -30,8 +30,10 @@
                     Width="330">
             <Button Content="Preference" x:Name="btn_preference"  Width="250" Height="50px"
                     FontSize="20" Click="BtnPreference_Click"></Button>
-            <Button Content="Voire les films a l'affiche" Width="250" Height="50px" Margin="10,10,10,40" 
+            <Button Content="Voire les films a l'affiche" Width="250" Height="50px" Margin="10,10,10,0" 
                     FontSize="20" Click="VoireFilm_Click"></Button>
+            <Button Content="Noter un film" Width="250" Height="50px" Margin="10,10,10,40" 
+                    FontSize="20" Click="btn_noterFilm"></Button>
         </StackPanel>
 
     </Grid>

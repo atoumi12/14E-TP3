@@ -20,7 +20,7 @@ namespace MonCine.Data
         public bool SurAffiche { get; set; }
         public List<Acteur> Acteurs { get; set; }
         public List<Realisateur> Realisateurs { get; set; }
-        private List<int> Notes { get; set; }
+        public List<int> Notes { get; set; }
         public double NoteMoyenne { get; set; }
 
 
@@ -106,7 +106,7 @@ namespace MonCine.Data
 
         #endregion
 
-        private double CalculerMoyennesNotes()
+        public double CalculerMoyennesNotes()
         {
             Notes ??= new List<int>();
             int taille = Notes.Count > 0 ? Notes.Count : 1;
