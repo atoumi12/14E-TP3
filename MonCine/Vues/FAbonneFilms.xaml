@@ -38,35 +38,43 @@
 
         <GroupBox Header="films" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3"
                   FontSize="15" Margin="10,0,0,0" Padding="10,10,10,10">
-            <ListView x:Name="LstFilms" Grid.Row="1" Grid.Column="1" Width="auto"
-                  Grid.RowSpan="3" Grid.ColumnSpan="2"
-                  Margin="0,0,0,0" SelectionChanged="LstFilms_SelectionChanged">
+
+            <ListView x:Name="LstFilms"  Width="auto"
+                      Margin="0,0,0,0" SelectionChanged="LstFilms_SelectionChanged">
 
             </ListView>
         </GroupBox>
 
         <GroupBox x:Name="grpSeances" Header="séances" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="3"
-                  FontSize="15" Margin="10,0,0,0" Visibility="Hidden">
+                  FontSize="15" Margin="10,0,0,0" >
 
             <StackPanel Orientation="Vertical" >
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,200">
+                <StackPanel x:Name="cboBtnReservation" Orientation="Horizontal" Margin="0,0,0,200">
+
                     <StackPanel Orientation="Horizontal" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <ComboBox x:Name="LstProjections" SelectionChanged="LstProjections_SelectionChanged"
-                    IsSynchronizedWithCurrentItem="True" FontSize="11.5" 
-                    SelectedIndex="0" Width="300" Margin="10,10,10,10">
+
+                        <ComboBox x:Name="cboProjections"
+                                  IsSynchronizedWithCurrentItem="True" FontSize="11.5" 
+                                  SelectedIndex="0" Width="300" Margin="10,10,10,10" SelectionChanged="cboProjections_SelectionChanged">
                         </ComboBox>
+
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="1" HorizontalAlignment="Center" VerticalAlignment="top">
-                        <Button x:Name="btn_reservation" Width="100"
-                    Margin="10,10,10,10"  Grid.RowSpan="1" Grid.ColumnSpan="1" FontSize="12"
-                    Click="Button_Click">reserver la place</Button>
+
+                        <Button x:Name="btn_reservation" MinWidth="120"
+                                Margin="0,10,10,10" FontSize="12"
+                                Content="Réserver une place" Click="btn_reservation_Click">
+                        </Button>
+
                     </StackPanel>
                 </StackPanel>
 
 
                 <StackPanel>
-                    <TextBlock x:Name="place_restante" Grid.Row="2"  TextWrapping="WrapWithOverflow"   FontSize="20" Margin="10,10,10,10"></TextBlock>
+                    <TextBlock x:Name="place_restante" TextWrapping="WrapWithOverflow"   
+                               FontSize="16" Margin="10,10,10,10">
+                    </TextBlock>
                 </StackPanel>
             </StackPanel>
 

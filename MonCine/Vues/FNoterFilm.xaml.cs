@@ -31,10 +31,8 @@ namespace MonCine.Vues
             InitializeComponent();
             currentUser = user;
             filmsVueParAbo = new List<Film>();
-            slider_note.IsEnabled = false;
-            btn_noterFilm.IsEnabled = false;
+        
             DALabonne = dalAbonne;
-            note = 0;
             
             initList();
         }
@@ -62,12 +60,13 @@ namespace MonCine.Vues
             if(LstFilms.SelectedItem != null)
             {
                 filmNoter = (Film)LstFilms.SelectedItem;
-                slider_note.IsEnabled = true;
+                sectionNote.Visibility = Visibility.Visible;
+                note = 0;
+
             }
             else
             {
-                slider_note.IsEnabled = false;
-                btn_noterFilm.IsEnabled = false;
+                sectionNote.Visibility = Visibility.Hidden;
             }
 
             
@@ -76,9 +75,17 @@ namespace MonCine.Vues
         private void btn_noterFilm_Click(object sender, RoutedEventArgs e)
         {
             DALFilm dalFilm = new DALFilm();
+
+            filmNoter.Notes ??= new List<int>();
             filmNoter.Notes.Add(note);
             filmNoter.NoteMoyenne = filmNoter.CalculerMoyennesNotes();
-            dalFilm.UpdateItem(filmNoter);
+            
+            bool res = dalFilm.UpdateItem(filmNoter);
+            if (res)
+            {
+                MessageBox.Show("La note a été attribuée avec succès !" , "Noter un film", MessageBoxButton.OK, MessageBoxImage.Information);
+                LstFilms.SelectedIndex = -1;
+            }
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
