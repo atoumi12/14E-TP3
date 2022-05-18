@@ -55,5 +55,10 @@ namespace MonCine.Vues
             FRecompenses fRecompenses = new FRecompenses(new DALRecompense(), new DALFilm(), new DALAbonne());
             NavigationService?.Navigate(fRecompenses);
         }
+
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService?.GoBack();
+        }
     }
 }

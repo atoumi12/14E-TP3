@@ -77,15 +77,16 @@ namespace MonCine.Vues
         }
 
 
-
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            bool champsRemplis = FilmCombobox.SelectedIndex != -1 && SalleCombobox.SelectedIndex != -1 && DatePickerProjection.SelectedDate != null;
+            bool champsRemplis = FilmCombobox.SelectedIndex != -1 && SalleCombobox.SelectedIndex != -1 &&
+                                 DatePickerProjection.SelectedDate != null;
             bool dateAnterieure = DatePickerProjection.SelectedDate < DateTime.Now;
 
             if (!champsRemplis)
             {
-                MessageBox.Show("Veuillez remplir les champs nécéssaires pour créer la projection", "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Veuillez remplir les champs nécéssaires pour créer la projection",
+                    "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             // TODO: ENLEVER LE COMMENTAIRE => VERIFICATION          
             //else if (dateAnterieure)
@@ -95,24 +96,34 @@ namespace MonCine.Vues
             else
             {
                 Projection projection = CreateProjectionToAdd();
-                // Créer la projection
-                var resultProjection = DalProjection.AddItem(projection);
+
                 // Affecter la date de la projection au film concernée
                 var resultFilm = DalFilm.AddProjectionDate(projection);
+                bool resultProjection = false;
+                if (resultFilm)
+                {
+                    // Créer la projection
+                    resultProjection = DalProjection.AddItem(projection);
+                }
 
                 if (resultProjection && resultFilm)
                 {
                     MessageBox.Show($"La projection a été crée avec succès !", "Création de projection",
                         MessageBoxButton.OK, MessageBoxImage.Information);
-                } 
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Erreur lors de la création de la projection.\nVeuillez programmer une reprojection si admissible",
+                        "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-           
         }
 
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.GoBack();
+            NavigationService?.GoBack();
         }
     }
 }

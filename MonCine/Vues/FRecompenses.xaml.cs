@@ -67,15 +67,19 @@ namespace MonCine.Vues
 
         private void lstReprojections_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lstReprojections.SelectedIndex == -1)
+            if (lstReprojections.SelectedIndex != -1)
             {
-                return;
+                Film film = lstReprojections.SelectedItem as Film;
+                lstAbonnesReprojection.ItemsSource = getAbonnes(film);
             }
 
-            Film film = lstReprojections.SelectedItem as Film;
-            lstAbonnesReprojection.ItemsSource = getAbonnes(film);
         }
 
+        /// <summary>
+        /// Récupère les abonnés concernés par le type de récompense
+        /// </summary>
+        /// <param name="pFilm">Le film en question</param>
+        /// <returns>Liste des abonnés</returns>
         private List<Abonne> getAbonnes(Film pFilm)
         {
             List<Abonne> abonnes = _dalAbonne.ReadItems();
@@ -94,7 +98,7 @@ namespace MonCine.Vues
                 case TypeRecompense.Reprojection:
                     abonnes.ForEach(abonne =>
                     {
-                        if (pFilm.Recompenses_AbonneAdmissibleReProjection(abonne))
+                        if (pFilm.Recompenses_AbonneAdmissibleReProjection(abonne) && _dalRecompense.AbonneAdmissibleRecompense(_modeRecompense, abonne,pFilm))
                         {
                             abonnesRecompenses.Add(abonne);
                         }
@@ -128,8 +132,19 @@ namespace MonCine.Vues
 
             if (result)
             {
-                MessageBox.Show("XXX");
+                MessageBox.Show($"Récompense ajouté avec succès à l'abonné {abonne} !", "Ajout de récompense", MessageBoxButton.OK, MessageBoxImage.Information);
+                lstAbonnesReprojection.ItemsSource = getAbonnes(film);
             }
+            else
+            {
+                MessageBox.Show($"Erreur lors de l'attribution de récompense.", 
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService?.GoBack();
         }
     }
 }

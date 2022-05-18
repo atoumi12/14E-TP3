@@ -23,6 +23,7 @@ namespace MonCine.Data.Entitites
 
         public override string ToString()
         {
+            // Fonction crée dans le fichier EnumHelper.cs
             return $"{Type.GetDesc()}";
         }
     }

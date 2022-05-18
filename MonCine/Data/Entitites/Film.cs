@@ -115,7 +115,7 @@ namespace MonCine.Data
         }
 
 
-        public void AjouterDateProjection(Projection pProjection)
+        public bool AjouterDateProjection(Projection pProjection)
         {
             if (pProjection is null)
             {
@@ -125,20 +125,25 @@ namespace MonCine.Data
             if (DatesProjection.Count < 2)
             {
                 DatesProjection.Add(pProjection.DateFin);
+                return true;
             }
+
+            return false;
         }
 
 
         public bool AdmissibleReprojection()
         {
-            // Si aucun projection, ou même pas deux projections, on peut pas procéder à une reprojection, il nous faut un min de deux projections ^_^
+            // Si moins que deux projections, on peut pas procéder à une reprojection, il nous faut un min de deux projections ^_^
             if (!DatesProjection.Any() || DatesProjection.Count < 2)
             {
-                return true;
+                // TODO: false, Test : true
+                return false;
             }
 
             DateTime dateDerniereProjection = DatesProjection.OrderBy(x => x.Date).ToList()[0];
-            return dateDerniereProjection > DateTime.Now - new TimeSpan(0, 1, 0, 0);
+            bool b = dateDerniereProjection > DateTime.Now.AddYears(1);
+            return b;
         }
 
 
@@ -152,7 +157,6 @@ namespace MonCine.Data
                     exists = true;
                 }
             });
-
 
             return exists;
         }

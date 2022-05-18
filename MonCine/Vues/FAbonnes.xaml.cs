@@ -44,7 +44,6 @@ namespace MonCine.Vues
 
             FAbonne fabonne = new FAbonne(unAbonne);
             NavigationService?.Navigate(fabonne);
-            LstAbonnes.SelectedItem = null;
         }
 
 
