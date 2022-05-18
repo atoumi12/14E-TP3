@@ -34,14 +34,8 @@ namespace MonCine.Vues
 
         private void ButtonAbonne_Click(object sender, RoutedEventArgs e)
         {
-
-            DALAbonne dALAbonne = new DALAbonne();
-            List<Abonne> lstAbo = dALAbonne.ReadItems();
-            Abonne abonne = lstAbo[0];
-
             FChoixAbonne fchoixabo = new FChoixAbonne(new DALAbonne());
             NavigationService?.Navigate(fchoixabo);
-
         }
     }
 }

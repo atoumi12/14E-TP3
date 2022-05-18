@@ -81,10 +81,15 @@ namespace MonCine.Vues
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             bool champsRemplis = FilmCombobox.SelectedIndex != -1 && SalleCombobox.SelectedIndex != -1 && DatePickerProjection.SelectedDate != null;
+            bool dateAnterieure = DatePickerProjection.SelectedDate < DateTime.Now;
 
             if (!champsRemplis)
             {
                 MessageBox.Show("Veuillez remplir les champs nécéssaires pour créer la projection", "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (dateAnterieure)
+            {
+                MessageBox.Show($"Veuillez choisir une date dans le futur pour la projection. \n La date saisie : {DatePickerProjection.SelectedDate.Value.ToShortDateString()} n'est pas valide", "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {

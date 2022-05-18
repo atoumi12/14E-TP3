@@ -49,5 +49,11 @@ namespace MonCine.Vues
             FAffiche frmAffiche = new FAffiche(new DALProjection(), new DALSalle());
             NavigationService?.Navigate(frmAffiche);
         }
+
+        private void BtnRecompenses_Click(object sender, RoutedEventArgs e)
+        {
+            FRecompenses fRecompenses = new FRecompenses(new DALRecompense(), new DALFilm(), new DALAbonne());
+            NavigationService?.Navigate(fRecompenses);
+        }
     }
 }

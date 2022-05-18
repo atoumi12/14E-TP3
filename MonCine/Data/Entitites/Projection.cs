@@ -19,6 +19,8 @@ namespace MonCine.Data
             Salle = salle;
             Film = film;
             DateDebut = pDate;
+            // Film de 2h30 par defaut 
+            DateFin = DateDebut + new TimeSpan(0, 2, 30, 0);
         }
 
         public override string ToString()

@@ -1,0 +1,83 @@
+﻿<Page x:Class="MonCine.Vues.FRecompenses"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:MonCine.Vues"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FRecompenses">
+
+    <Grid Background="AliceBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Type de récompenses"
+                  Grid.Row="1" Grid.Column="1" FontWeight="DemiBold">
+            <StackPanel Orientation="Vertical" Margin="2,10,0,0">
+                <RadioButton x:Name="optReprojection" GroupName="type"
+                             Content="Assister à une reprojection" Checked="optReprojection_Checked">
+                </RadioButton>
+                <RadioButton x:Name="optAvantPremiere" GroupName="type"
+                             Content="Inviter à une avant première" Checked="optAvantPremiere_Checked">
+                </RadioButton>
+            </StackPanel>
+        </GroupBox>
+
+        <!--Reprojection-->
+        <GroupBox x:Name="grbReprojection" Header="Reprojection" FontSize="14" FontWeight="DemiBold"
+                  Grid.Row="1" Grid.RowSpan="2" Grid.Column="3">
+            <StackPanel Orientation="Horizontal">
+
+                <ListView x:Name="lstReprojections" Width="200" 
+                          FontSize="12"
+                          Margin="5" SelectionChanged="lstReprojections_SelectionChanged"></ListView>
+                
+                <GroupBox Header="Abonné(s) condidat(s)" Width="auto" Height="200"
+                          FontSize="13" VerticalAlignment="Top">
+
+                    <StackPanel Orientation="Vertical">
+                        <ListView x:Name="lstAbonnesReprojection" FontSize="10"
+                                  Margin="2" Height="150" SelectionMode="Multiple"></ListView>
+
+
+                        <TextBlock x:Name="txtAucunAbonneReprojection" FontSize="10"
+                                   FontWeight="DemiBold"></TextBlock>
+
+                    </StackPanel>
+                </GroupBox>
+
+                    <Button x:Name="OffirRecompense" Content="Offrir" Width="80" Margin="10,10,0,0"
+                            VerticalAlignment="Top"/>
+            </StackPanel>
+
+        </GroupBox>
+
+        <GroupBox x:Name="grbAvantPremiere" Header="Avant première" Visibility="Hidden"
+                  Grid.Row="1" Grid.RowSpan="2" Grid.Column="3">
+
+            <StackPanel>
+                <TextBlock Text="Avant Premiere"></TextBlock>
+
+            </StackPanel>
+
+        </GroupBox>
+
+
+    </Grid>
+</Page>

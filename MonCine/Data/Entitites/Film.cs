@@ -24,10 +24,6 @@ namespace MonCine.Data
         public double NoteMoyenne { get; set; }
 
 
-        [Range(0, 2, ErrorMessage = "Le nombre de projection d'un film ne peut pas dépasser 2 projections pas années")]
-        private int NbProjection { get; set; }
-
-
         public Film(string pName, List<Categorie> pCategories = null, List<Acteur> pActeurs = null,
             List<Realisateur> pRealisateurs = null, bool pSurAffiche = false)
         {
@@ -41,7 +37,6 @@ namespace MonCine.Data
             NoteMoyenne = CalculerMoyennesNotes();
 
             DatesProjection = new List<DateTime>();
-            NbProjection = 0;
         }
 
         /// <summary>
@@ -71,7 +66,6 @@ namespace MonCine.Data
             NoteMoyenne = CalculerMoyennesNotes();
 
             DatesProjection = new List<DateTime>();
-            NbProjection = 0;
         }
 
 
@@ -128,9 +122,41 @@ namespace MonCine.Data
                 throw new ArgumentNullException("pProjection", "La projection ne peut pas être nulle");
             }
 
-            DatesProjection.Add(pProjection.DateDebut);
-            NbProjection++;
+            if (DatesProjection.Count < 2)
+            {
+                DatesProjection.Add(pProjection.DateFin);
+            }
         }
+
+
+        public bool AdmissibleReprojection()
+        {
+            // Si aucun projection, ou même pas deux projections, on peut pas procéder à une reprojection, il nous faut un min de deux projections ^_^
+            if (!DatesProjection.Any() || DatesProjection.Count < 2)
+            {
+                return true;
+            }
+
+            DateTime dateDerniereProjection = DatesProjection.OrderBy(x => x.Date).ToList()[0];
+            return dateDerniereProjection > DateTime.Now - new TimeSpan(0, 1, 0, 0);
+        }
+
+
+        public bool Recompenses_AbonneAdmissibleReProjection(Abonne pAbonne)
+        {
+            bool exists = false;
+            pAbonne.CategoriesPref?.ForEach(cat =>
+            {
+                if (Categories.Contains(Enum.Parse<Categorie>(cat)))
+                {
+                    exists = true;
+                }
+            });
+
+
+            return exists;
+        }
+
 
         public override string ToString()
         {

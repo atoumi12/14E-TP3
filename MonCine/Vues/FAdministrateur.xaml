@@ -21,17 +21,20 @@
         </Grid.RowDefinitions>
         <Image Grid.Row="0" Grid.Column="0" Source="/Ressources/Images/Logo.png"/>
         <Label Grid.Row="0" Grid.Column="1" Content="Mon ciné" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontFamily="MV Boli" FontSize="36" FontWeight="Bold"/>
-        <Border Grid.Row="1" Grid.Column="1" BorderThickness="2,2,2,2" Height="280" Opacity="0.3" Margin="50,0,50,0">
+        <Border Grid.Row="1" Grid.Column="1" BorderThickness="2,2,2,2" 
+                Height="350" Opacity="0.3" Margin="50,0,50,0">
             <Border.Background>
                 <ImageBrush ImageSource="/Ressources/Images/sallecinema.jpg" />
             </Border.Background>
         </Border>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,0" Height="300">
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
+                    Margin="0,0,0,0" Height="350">
             <Button Content="Consulter les abonnées" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,25,150,25" Click="Button_Click" Height="30"/>
-            <Button Content="Gestion des projections" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Click="Button_Click_1" Height="30"/>
-            <Button x:Name="BtnFilm" Content="Gestion des films" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Click="BtnFilm_Click" Height="30"/>
-            <Button x:Name="BtnAffiche" Content="Gestion de l'affiche" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,20,150,25" Height="30" Click="BtnAffiche_Click"/>
+            <Button Content="Gestion des projections" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,15,150,25" Click="Button_Click_1" Height="30"/>
+            <Button x:Name="BtnFilm" Content="Gestion des films" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,15,150,25" Click="BtnFilm_Click" Height="30"/>
+            <Button x:Name="BtnAffiche" Content="Gestion de l'affiche" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,10,150,25" Height="30" Click="BtnAffiche_Click"/>
+            <Button x:Name="BtnRecompenses" Content="Offrir des récompenses" Background="#FF220C0C" Foreground="#FFFDFCFC" FontWeight="Bold" Margin="150,0,150,25" Height="30" Click="BtnRecompenses_Click"/>
         </StackPanel>
 
     </Grid>

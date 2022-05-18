@@ -174,6 +174,10 @@ namespace MonCine.Vues
                 erreurs += " - Veuillez choisir une date de projection valide \n";
             }
 
+            else if (DatePickerDateProjectionFilm.SelectedDate < DateTime.Now)
+            {
+                erreurs += " - Veuillez selectionner une date de projection dans le futur \n";
+            }
 
             if (!string.IsNullOrWhiteSpace(erreurs))
             {
