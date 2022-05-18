@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,7 @@ namespace MonCine.Vues
         private DALAbonne DalAbonne { get; set; }
         private Abonne CurrentUser { get; set; }
         private List<Projection> projections;
+        private List<Projection> projectionsNonVue;
         private Projection uneProjection { get; set; }
         private int nbPlaceRestante { get; set; }
 
@@ -40,6 +42,7 @@ namespace MonCine.Vues
             films = Dal.ReadItems();
 
             projections = new List<Projection>();
+            projectionsNonVue = new List<Projection>();
 
 
             CurrentUser = currentUser;
@@ -59,6 +62,21 @@ namespace MonCine.Vues
 
 
         }
+
+        private bool verifierSiDejaReserberParAbonne(Projection uneProjection)
+        {
+
+            if (CurrentUser.Reservations.Count > 0 )
+            {
+                bool countaiReservation = CurrentUser.Reservations.Where(a => a.Id == uneProjection.Id).ToList().Count > 0;
+                if (countaiReservation)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -69,12 +87,28 @@ namespace MonCine.Vues
 
         private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            projectionsNonVue.Clear();
             grpSeances.Visibility = Visibility.Visible;
             Film unFilm = LstFilms.SelectedItem as Film;
 
             projections = DalProjection.GetProjectionsOfFilm(unFilm);
-            LstProjections.ItemsSource = projections;
 
+            foreach(Projection uneProjection in projections)
+            {
+                if (!verifierSiDejaReserberParAbonne(uneProjection))
+                {
+                    projectionsNonVue.Add(uneProjection);
+                }
+            }
+
+            if (projectionsNonVue.Count == 0)
+            {
+                place_restante.Text = "Il ne reste aucunes seance de disponible";
+                btn_reservation.IsEnabled = false;
+            }
+            LstProjections.ItemsSource = projectionsNonVue;
+            LstProjections.Items.Refresh();
+            LstProjections.SelectedIndex = 0;
 
         }
 
@@ -88,6 +122,15 @@ namespace MonCine.Vues
             {
                 btn_reservation.IsEnabled = true;
             }
+
+            if (uneProjection != null)
+            {
+                if (uneProjection.Salle.Places.Count == 0)
+                {
+                    btn_reservation.IsEnabled = false;
+                }
+            }
+
         }
         public void GestionBtnReservation()
         {
