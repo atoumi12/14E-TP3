@@ -65,7 +65,17 @@ namespace MonCine.Data
 
             try
             {
+
                 var collection = database.GetCollection<Recompense>(CollectionName);
+
+                // If exists
+                var filter = Builders<Recompense>.Filter.Eq(r => r.Id , pRecompense.Id);
+                bool exists = collection.FindSync(filter).ToList().Count > 0;
+                if (!exists)
+                {
+                    return AddItem(pRecompense);
+                }
+
                 collection.ReplaceOne(r => r.Id == pRecompense.Id, pRecompense);
             }
             catch (Exception ex)
@@ -115,7 +125,7 @@ namespace MonCine.Data
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Impossible d'ajouter des récompenses zdans la collection " + ex.Message, "Erreur",
+                MessageBox.Show("Impossible d'ajouter des récompenses dans la collection " + ex.Message, "Erreur",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 throw;

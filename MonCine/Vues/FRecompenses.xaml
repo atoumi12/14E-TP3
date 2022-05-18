@@ -63,7 +63,7 @@
                 </GroupBox>
 
                     <Button x:Name="OffirRecompense" Content="Offrir" Width="80" Margin="10,10,0,0"
-                            VerticalAlignment="Top"/>
+                            VerticalAlignment="Top" Click="OffirRecompense_Click"/>
             </StackPanel>
 
         </GroupBox>

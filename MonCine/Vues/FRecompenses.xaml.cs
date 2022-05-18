@@ -46,8 +46,11 @@ namespace MonCine.Vues
 
         private void ModeUpdate()
         {
-            grbReprojection.Visibility = _modeRecompense == TypeRecompense.Reprojection ? Visibility.Visible : Visibility.Hidden;
-            grbAvantPremiere.Visibility = _modeRecompense == TypeRecompense.AvantPremiere ? Visibility.Visible : Visibility.Hidden;
+            grbReprojection.Visibility =
+                _modeRecompense == TypeRecompense.Reprojection ? Visibility.Visible : Visibility.Hidden;
+            grbAvantPremiere.Visibility = _modeRecompense == TypeRecompense.AvantPremiere
+                ? Visibility.Visible
+                : Visibility.Hidden;
         }
 
         private void optReprojection_Checked(object sender, RoutedEventArgs e)
@@ -68,10 +71,9 @@ namespace MonCine.Vues
             {
                 return;
             }
-            
+
             Film film = lstReprojections.SelectedItem as Film;
             lstAbonnesReprojection.ItemsSource = getAbonnes(film);
-
         }
 
         private List<Abonne> getAbonnes(Film pFilm)
@@ -81,7 +83,7 @@ namespace MonCine.Vues
             {
                 lstAbonnesReprojection.Visibility = Visibility.Hidden;
                 txtAucunAbonneReprojection.Visibility = Visibility.Visible;
-                txtAucunAbonneReprojection.Text = "Aucun abonné enregirstré !";
+                txtAucunAbonneReprojection.Text = "Aucun abonné enregistré !";
                 // Retourne une liste vide pour éviter un beug
                 return new List<Abonne>();
             }
@@ -99,13 +101,35 @@ namespace MonCine.Vues
                     });
                     break;
             }
-    
+
             return abonnesRecompenses;
         }
 
+
         private void OffirRecompense_Click(object sender, RoutedEventArgs e)
         {
-            
+            Abonne abonne = lstAbonnesReprojection.SelectedItem as Abonne;
+            if (abonne is null)
+            {
+                MessageBox.Show("Veuillez séléctionnez un abonné", "Récompense", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            Film film = lstReprojections.SelectedItem as Film;
+            if (film is null)
+            {
+                MessageBox.Show("Veuillez séléctionnez un film", "Récompense", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+
+            Recompense recompense = new Recompense(_modeRecompense);
+            bool result = _dalRecompense.AssignerRecompense(recompense, abonne, film);
+
+            if (result)
+            {
+                MessageBox.Show("XXX");
+            }
         }
     }
 }
