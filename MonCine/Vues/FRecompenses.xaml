@@ -75,13 +75,34 @@
 
 
         <!--Avant Premiere-->
-        <GroupBox x:Name="grbAvantPremiere" Header="Avant première" Visibility="Hidden"
+        <GroupBox x:Name="grbAvantPremiere" Header="Avant première" Visibility="visible 
+                  "
                   Grid.Row="1" Grid.RowSpan="2" Grid.Column="3">
 
-            <StackPanel>
-                <TextBlock Text="Avant Premiere"></TextBlock>
+            <StackPanel Orientation="Horizontal">
 
+                <ListView x:Name="lstAvantPremiere" Width="200" 
+                          FontSize="12"
+                          Margin="5" SelectionChanged="lstAvantPremiere_SelectionChanged"></ListView>
+
+                <GroupBox Header="Abonné(s) condidat(s)" Width="auto" Height="200"
+                          FontSize="13" VerticalAlignment="Top">
+
+                    <StackPanel Orientation="Vertical">
+                        <ListView x:Name="lstAbonnesAvantPremiere" FontSize="10"
+                                  Margin="2" Height="150" SelectionMode="Multiple" SelectionChanged="lstAbonnesAvantPremiere_SelectionChanged"></ListView>
+
+
+                        <TextBlock x:Name="txtAucunAbonneAvantPremiere" FontSize="10"
+                                   FontWeight="DemiBold"></TextBlock>
+
+                    </StackPanel>
+                </GroupBox>
+
+                <Button x:Name="OffirRecompenseAvantPremiere" Content="Offrir" Width="80" Margin="10,10,0,0"
+                            VerticalAlignment="Top" Click="OffirRecompenseAvantPremiere_Click"/>
             </StackPanel>
+
 
         </GroupBox>
 

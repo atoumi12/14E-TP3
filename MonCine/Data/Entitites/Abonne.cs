@@ -47,8 +47,24 @@ namespace MonCine.Data
         {
             throw new NotImplementedException();
         }
-
         
+        public bool AdmissibleAbo(Film avantPremiere)
+        {
+            bool admissible = false;
+            bool admissibleOnActeur = false;
+            bool admissibleOnRealisteur = false;
+            List<Acteur> lstActeurAvantPremiere = avantPremiere.Acteurs;
+            List<Realisateur> lstRealisateurAvantPremiere = avantPremiere.Realisateurs;
+            if (ActeursPref.Any(x => lstActeurAvantPremiere.Any(y => y.Id == x.Id))) { admissibleOnActeur = true;  };
+            if (RealisationsPref.Any(x => lstRealisateurAvantPremiere.Any(y => y.Id == x.Id))) { admissibleOnRealisteur = true; };
+
+            if (admissibleOnActeur || admissibleOnRealisteur)
+            {
+                admissible = true;
+            }
+            return admissible;
+        }
+
 
 
         public bool EstPrioriaitaire()

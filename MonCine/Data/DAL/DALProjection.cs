@@ -55,7 +55,20 @@ namespace MonCine.Data
         /// <returns>Liste de Projection</returns>
         public List<Projection> ReadItems()
         {
-            throw new NotImplementedException();
+            List<Projection> projections = new List<Projection>();
+
+            try
+            {
+                var collection = database.GetCollection<Projection>(CollectionName);
+                projections = collection.FindSync(Builders<Projection>.Filter.Empty).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+
+            return projections;
         }
 
 

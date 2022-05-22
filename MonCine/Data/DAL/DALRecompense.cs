@@ -138,6 +138,27 @@ namespace MonCine.Data
         }
 
 
+        public bool AssignerRecompenseAPlusieursAbonnes(Recompense pRecompense, List<Abonne> pAbonne, Film pFilm)
+        {
+            bool ajoutRecompense = false;
+
+
+            foreach (Abonne abo in pAbonne)
+            {
+                Recompense nouvelleRecompense = new Recompense( pRecompense.Type, pRecompense.Film, abo);
+
+                ajoutRecompense = AssignerRecompense(nouvelleRecompense, abo, pFilm);
+                if (!ajoutRecompense)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        
+
         public bool AbonneAdmissibleRecompense(TypeRecompense pTypeRecompense, Abonne pAbonne, Film pFilm)
         {
             List<Recompense> recompenses = ReadItems();
