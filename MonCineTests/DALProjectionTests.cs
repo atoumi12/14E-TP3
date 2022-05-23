@@ -54,6 +54,8 @@ namespace MonCineTests
         {
             mongoClient.Setup(x => x.GetDatabase(It.IsAny<string>(), default)).Returns(mongodb.Object);
             mongodb.Setup(x => x.GetCollection<Projection>("Projection", default)).Returns(projectionCollection.Object);
+
+
         }
 
 
@@ -64,6 +66,23 @@ namespace MonCineTests
             projectionCursor.SetupSequence(x => x.MoveNext(It.IsAny<CancellationToken>())).Returns(true).Returns(false);
 
             projectionCollection.Setup(x => x.FindSync(Builders<Projection>.Filter.Empty, It.IsAny<FindOptions<Projection>>(), default)).Returns(projectionCursor.Object);
+
+
+
+            // Mock de la méthode InsertOne
+            this.projectionCollection
+                .Setup(x => x.InsertOne(It.IsAny<Projection>(), default, default))
+                .Verifiable();
+
+            // Mock de la méthode ReplaceOne
+            this.projectionCollection
+                .Setup(x => x.ReplaceOne(It.IsAny<FilterDefinition<Projection>>(), It.IsAny<Projection>(), It.IsAny<ReplaceOptions>(), default))
+                .Verifiable();
+
+            // Mock de la méthode DeleteOne
+            this.projectionCollection
+                .Setup(x => x.DeleteOne(It.IsAny<FilterDefinition<Projection>>(), default))
+                .Verifiable();
 
             InitializeMongoDb();
         }
@@ -137,7 +156,7 @@ namespace MonCineTests
 
             // Assert
             Assert.Equal(projection, projectionsList.Find(x => x.Film.Name == projection.Film.Name));
-
+            projectionCollection.Verify(x => x.ReplaceOne(It.IsAny<FilterDefinition<Projection>>(), It.IsAny<Projection>(), It.IsAny<ReplaceOptions>(), default));
         }
 
 
