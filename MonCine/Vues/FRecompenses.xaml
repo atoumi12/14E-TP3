@@ -90,7 +90,7 @@
 
                     <StackPanel Orientation="Vertical">
                         <ListView x:Name="lstAbonnesAvantPremiere" FontSize="10"
-                                  Margin="2" Height="150" SelectionMode="Multiple" SelectionChanged="lstAbonnesAvantPremiere_SelectionChanged"></ListView>
+                                  Margin="2" Height="150" SelectionMode="Multiple" ></ListView>
 
 
                         <TextBlock x:Name="txtAucunAbonneAvantPremiere" FontSize="10"

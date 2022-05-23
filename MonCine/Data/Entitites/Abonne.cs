@@ -76,14 +76,22 @@ namespace MonCine.Data
         public string AfficherActeurs()
         {
             string res = "";
-            ActeursPref.ForEach(acteur => res += acteur);
+            ActeursPref.ForEach(acteur =>
+            {
+                res += acteur;
+                res += ", ";
+            });
             return res.Length > 0 ? res : "Aucun acteur ajouté en favori";
         }
 
         public string AfficherRealisateurs()
         {
             string res = "";
-            RealisationsPref.ForEach(r => res += r);
+            RealisationsPref.ForEach(r =>
+            {
+                res += r;
+                res += ", ";
+            });
             return res.Length > 0 ? res : "Aucun réalisateur ajouté en favori";
         }
 

@@ -164,8 +164,6 @@ namespace MonCine.Vues
         private void lstAvantPremiere_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             refreshLstAbonneAvantPremiere();
-
-
         }
 
 
