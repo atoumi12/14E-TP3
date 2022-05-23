@@ -54,6 +54,20 @@ namespace MonCineTests
 
             filmCollection.Setup(x => x.FindSync(Builders<Film>.Filter.Empty, It.IsAny<FindOptions<Film>>(), default)).Returns(filmCursor.Object);
 
+            // Mock de la méthode InsertOne
+            filmCollection
+                .Setup(x => x.InsertOne(It.IsAny<Film>(), default, default))
+                .Verifiable();
+
+            // Mock de la méthode ReplaceOne
+            filmCollection
+                .Setup(x => x.ReplaceOne(It.IsAny<FilterDefinition<Film>>(), It.IsAny<Film>(), It.IsAny<ReplaceOptions>(), default))
+                .Verifiable();
+
+            // Mock de la méthode DeleteOne
+            filmCollection
+                .Setup(x => x.DeleteOne(It.IsAny<FilterDefinition<Film>>(), default))
+                .Verifiable();
 
             InitializeMongoDb();
         }
@@ -92,6 +106,7 @@ namespace MonCineTests
 
             // Assert
             Assert.True(result);
+            filmCollection.Verify(x => x.InsertOne(It.IsAny<Film>(), default, default));
         }
 
 
@@ -128,7 +143,8 @@ namespace MonCineTests
             
             // Assert
             Assert.True(result);
-           
+            filmCollection.Verify(x => x.DeleteOne(It.IsAny<FilterDefinition<Film>>(), default));
+
         }
 
 
@@ -203,6 +219,7 @@ namespace MonCineTests
 
             // Assert
             Assert.Equal(film, filmList.Find(x=>x.Name == film.Name) );
+            filmCollection.Verify(x => x.ReplaceOne(It.IsAny<FilterDefinition<Film>>(), It.IsAny<Film>(), It.IsAny<ReplaceOptions>(), default));
 
         }
 

@@ -52,6 +52,16 @@ namespace MonCineTests
                 .Setup(x => x.FindSync(Builders<Recompense>.Filter.Empty, It.IsAny<FindOptions<Recompense>>(), default))
                 .Returns(recompenseCursor.Object);
 
+            // Mock de la méthode InsertOne
+            recompenseCollection
+                .Setup(x => x.InsertOne(It.IsAny<Recompense>(), default, default))
+                .Verifiable();
+
+            // Mock de la méthode ReplaceOne
+            recompenseCollection
+                .Setup(x => x.ReplaceOne(It.IsAny<FilterDefinition<Recompense>>(), It.IsAny<Recompense>(), It.IsAny<ReplaceOptions>(), default))
+                .Verifiable();
+
 
             InitializeMongoDb();
         }
@@ -87,6 +97,7 @@ namespace MonCineTests
 
             // Assert
             Assert.True(result);
+            recompenseCollection.Verify(x => x.InsertOne(It.IsAny<Recompense>(), default, default));
         }
 
 
@@ -134,11 +145,12 @@ namespace MonCineTests
             // Act
             Recompense recompense = recompenseList[0];
             recompense.Type = TypeRecompense.Reprojection;
+
             dal.UpdateItem(recompense);
 
             // Assert
             Assert.Equal(recompense, recompenseList.Find(x => x.Id== recompense.Id));
-
+       
         }
 
 
