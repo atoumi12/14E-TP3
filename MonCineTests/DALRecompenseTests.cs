@@ -86,26 +86,5 @@ namespace MonCineTests
             // Act and Assert
             ExceptionUtil.AssertThrows<ArgumentNullException>(delegate { dal.UpdateItem(abonne); });
         }
-
-        [Fact]
-        public void UpdateItem_moqReplaceOne_ReturnTrueIfAbonneUpdated()
-        {
-            // Arrange
-            InitializeMongoAbonneCollection();
-
-            var dal = new DALAbonne(mongoClient.Object);
-
-            // Act
-            Abonne abonne = abonneList[0];
-            abonne.Username = "username 02";    
-            bool res = dal.UpdateItem(abonne);
-
-            // Assert
-            Assert.True(res);
-            Assert.Equal(abonne, abonneList.Find(x => x.Username == abonne.Username));
-        }
-
-
-
     }
 }

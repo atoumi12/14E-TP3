@@ -13,23 +13,22 @@ namespace MonCineTests
     {
         private Mock<IMongoClient> mongoClient;
         private Mock<IMongoDatabase> mongodb;
-
-        private Mock<IMongoCollection<Abonne>> abonneCollection;
+        private readonly Mock<IMongoCollection<Abonne>> abonneCollection;
         private List<Abonne> abonneList;
         private Mock<IAsyncCursor<Abonne>> abonneCursor;
 
+
         public DALAbonneTests()
         {
-            mongoClient = new Mock<IMongoClient>();
-            mongodb = new Mock<IMongoDatabase>();
-
-            abonneCollection = new Mock<IMongoCollection<Abonne>>();
-            abonneCursor = new Mock<IAsyncCursor<Abonne>>();
+            this.mongoClient = new Mock<IMongoClient>();
+            this.mongodb = new Mock<IMongoDatabase>();
+            this.abonneCollection = new Mock<IMongoCollection<Abonne>>();
+            this.abonneCursor = new Mock<IAsyncCursor<Abonne>>();
 
             DateTime uneDate = new DateTime();
             uneDate = DateTime.Today;
 
-            abonneList = new List<Abonne>
+            this.abonneList = new List<Abonne>
             {
                 new Abonne("Gwenael", "Galliot", "Abonne 1", 12, uneDate),
                 new Abonne("Loan", "Rage", "Abonne 2", 3, uneDate),
@@ -39,22 +38,38 @@ namespace MonCineTests
 
         private void InitializeMongoDb()
         {
-            mongoClient.Setup(x => x.GetDatabase(It.IsAny<string>(), default)).Returns(mongodb.Object);
-            mongodb.Setup(x => x.GetCollection<Abonne>("Abonne", default)).Returns(abonneCollection.Object);
+            this.mongoClient.Setup(x => x.GetDatabase(It.IsAny<string>(), default)).Returns(mongodb.Object);
+            this.mongodb.Setup(x => x.GetCollection<Abonne>("Abonne", default)).Returns(abonneCollection.Object);
         }
 
         private void InitializeMongoAbonneCollection()
         {
-            abonneCursor.Setup(x => x.Current).Returns(abonneList);
+            this.abonneCursor.Setup(x => x.Current).Returns(abonneList);
 
-            abonneCursor.SetupSequence(x => x.MoveNext(It.IsAny<CancellationToken>())).Returns(true).Returns(false);
+            this.abonneCursor.SetupSequence(x => x.MoveNext(It.IsAny<CancellationToken>())).Returns(true).Returns(false);
 
-            abonneCollection
+            this.abonneCollection
                 .Setup(x => x.FindSync(Builders<Abonne>.Filter.Empty, It.IsAny<FindOptions<Abonne>>(), default))
                 .Returns(abonneCursor.Object);
 
 
-            InitializeMongoDb();
+              // Mock de la méthode InsertOne
+            this.abonneCollection
+                .Setup(x => x.InsertOne(It.IsAny<Abonne>(), default, default))
+                .Verifiable();
+
+            // Mock de la méthode ReplaceOne
+            this.abonneCollection
+                .Setup(x => x.ReplaceOne(It.IsAny<FilterDefinition<Abonne>>(), It.IsAny<Abonne>(), It.IsAny<ReplaceOptions>(), default))
+                .Verifiable();
+
+            // Mock de la méthode DeleteOne
+            this.abonneCollection
+                .Setup(x => x.DeleteOne(It.IsAny<FilterDefinition<Abonne>>(), default))
+                .Verifiable();
+
+
+            this.InitializeMongoDb();
         }
 
 
@@ -62,7 +77,7 @@ namespace MonCineTests
         public void ReadItems_moqFindSyncCall()
         {
             // Arrange
-            InitializeMongoAbonneCollection();
+            this.InitializeMongoAbonneCollection();
 
             var dal = new DALAbonne(mongoClient.Object);
 
@@ -70,7 +85,7 @@ namespace MonCineTests
             var documents = dal.ReadItems();
 
             // Assert
-            Assert.Equal(abonneList, documents);
+            NUnit.Framework.CollectionAssert.AreEqual(abonneList, documents);
         }
 
 
@@ -104,6 +119,9 @@ namespace MonCineTests
             // Assert
             Assert.True(res);
             Assert.Equal(abonne, abonneList.Find(x => x.Username == abonne.Username));
+
+            abonneCollection.Verify(x => x.ReplaceOne(It.IsAny<FilterDefinition<Abonne>>(), It.IsAny<Abonne>(), It.IsAny<ReplaceOptions>(), default));
+
         }
 
 
