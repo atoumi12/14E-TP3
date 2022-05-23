@@ -167,7 +167,9 @@ namespace MonCine.Data
 
         public bool AdmissibleAvantPremiere()
         {
-
+            // l'avant premiere d'un film est la toute premiere projection de ce film lors de la sortie cinema
+            // je verifie donc qu'il est la l'affiche et qu'ils possaide plusieurs projections. L'avant premiere sera 
+            // la premiere de la liste
             if(SurAffiche && DatesProjection.Count > 0)
             {
                 return true;

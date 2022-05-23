@@ -163,24 +163,7 @@ namespace MonCine.Vues
 
         private void lstAvantPremiere_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Film avantPremiere = lstAvantPremiere.SelectedItem as Film;
-
-            abonnes = abonnes.Where(a => a.AdmissibleAbo(avantPremiere)).ToList();
-            lstAbonnesAvantPremiere.ItemsSource = abonnes;
-            lstAbonnesAvantPremiere.Items.Refresh();
-            List<Projection> lstProj = _dalProjection.ReadItems().ToList();
-            lstProj = lstProj.Where(x => x.Film.Id == avantPremiere.Id).ToList();
-            if (lstProj.Count > 0)
-            {
-                int nbPlace = lstProj[0].Salle.Places.Count();
-                int index = 0;
-                while (index < nbPlace && index < abonnes.Count())
-                {
-                    lstAbonnesAvantPremiere.SelectedItems.Add(lstAbonnesAvantPremiere.Items[index]);
-                    index++;
-                }
-            }
-            
+            refreshLstAbonneAvantPremiere();
 
 
         }
@@ -191,7 +174,7 @@ namespace MonCine.Vues
 
         {
             abonnes = lstAbonnesAvantPremiere.SelectedItems.OfType<Abonne>().ToList();
-        
+
             if (abonnes.Count == 0 )
             {
                 MessageBox.Show("Veuillez séléctionnez un abonné", "Récompense", MessageBoxButton.OK,
@@ -219,6 +202,61 @@ namespace MonCine.Vues
                 MessageBox.Show($"Erreur lors de l'attribution de récompense.",
                     "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            refreshLstAbonneAvantPremiere();
+
         }
+
+
+        private void refreshLstAbonneAvantPremiere()
+        {
+            AbonneAvantPremiere();
+            lstAbonnesAvantPremiere.ItemsSource = abonnes;
+            lstAbonnesAvantPremiere.Items.Refresh();
+        }
+
+        private void AbonneAvantPremiere()
+        {
+            Film avantPremiere = lstAvantPremiere.SelectedItem as Film;
+
+            abonnes = abonnes.Where(a => a.AdmissibleAbo(avantPremiere)).ToList();
+
+            List<Abonne> aboAvantPremiere = new List<Abonne>();
+
+            foreach (Abonne abo in abonnes)
+            {
+                if (_dalRecompense.AbonneAdmissibleRecompense(_modeRecompense, abo, avantPremiere))
+                {
+                    aboAvantPremiere.Add(abo);
+                }
+
+            }
+            abonnes = aboAvantPremiere;
+
+            selectAbonneInAbonneAvantPremiereList();
+
+        }
+
+        private void selectAbonneInAbonneAvantPremiereList()
+        {
+            lstAbonnesAvantPremiere.ItemsSource = abonnes;
+            lstAbonnesAvantPremiere.Items.Refresh();
+
+            Film avantPremiere = lstAvantPremiere.SelectedItem as Film;
+            List<Projection> lstProj = _dalProjection.ReadItems().ToList();
+            lstProj = lstProj.Where(x => x.Film.Id == avantPremiere.Id).ToList();
+            if (lstProj.Count > 0)
+            {
+                int nbPlace = lstProj[0].Salle.Places.Count();
+                int index = 0;
+                while (index < nbPlace && index < abonnes.Count())
+                {
+                    lstAbonnesAvantPremiere.SelectedItems.Add(lstAbonnesAvantPremiere.Items[index]);
+                    index++;
+                }
+            }
+        }
+
+
+
     }
 }
