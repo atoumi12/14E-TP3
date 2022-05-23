@@ -42,7 +42,7 @@ namespace MonCineTests
             mongodb.Setup(x => x.GetCollection<Recompense>("Recompense", default)).Returns(recompenseCollection.Object);
         }
 
-        private void InitializeMongoAbonneCollection()
+        private void InitializeMongoRecompenseCollection()
         {
             recompenseCursor.Setup(x => x.Current).Returns(recompenseList);
 
@@ -61,7 +61,7 @@ namespace MonCineTests
         public void ReadItems_moqFindSyncCall()
         {
             // Arrange
-            InitializeMongoAbonneCollection();
+            InitializeMongoRecompenseCollection();
 
             var dal = new DALRecompense(mongoClient.Object);
 
@@ -72,21 +72,91 @@ namespace MonCineTests
             Assert.Equal(recompenseList, documents);
         }
 
-
         [Fact]
-        public void UpdateItem_moqReplaceOne_ThrowsArgumentNullExceptionIfAbonneIsNull()
+        public void AddItem_moqInsertOne_ReturnTrueWhenRecompenseInserted()
         {
             // Arrange
-            InitializeMongoAbonneCollection();
+            InitializeMongoRecompenseCollection();
 
-            var dal = new DALAbonne(mongoClient.Object);
+            var dal = new DALRecompense(mongoClient.Object);
 
-            Abonne abonne = null;
+            Recompense recompense = new Recompense(TypeRecompense.AvantPremiere, new Film("Fast"), new Abonne("pfleury"));
 
-            // Act and Assert
-            ExceptionUtil.AssertThrows<ArgumentNullException>(delegate { dal.UpdateItem(abonne); });
+            // Act
+            bool result = dal.AddItem(recompense);
+
+            // Assert
+            Assert.True(result);
         }
 
+
+        [Fact]
+        public void AddItem_moqInsertOne_ThrowsArgumentNullExceptionIfRecompenseIsNull()
+        {
+            // Arrange
+            InitializeMongoRecompenseCollection();
+
+            var dal = new DALRecompense(mongoClient.Object);
+
+            Recompense recompense= null;
+
+            // Act and Assert
+            ExceptionUtil.AssertThrows<ArgumentNullException>(delegate
+            {
+                dal.AddItem(recompense);
+            });
+        }
+
+
+        [Fact]
+        public void UpdateItem_moqReplaceOne_ThrowsArgumentNullExceptionIfRecompenseIsNull()
+        {
+            // Arrange
+            InitializeMongoRecompenseCollection();
+
+            var dal = new DALRecompense(mongoClient.Object);
+
+            Recompense recompense = null;
+
+            // Act and Assert
+            ExceptionUtil.AssertThrows<ArgumentNullException>(delegate { dal.UpdateItem(recompense); });
+        }
+
+
+        [Fact]
+        public void UpdateItem_moqReplaceOne_ReturnTrueIfFilmUpdated()
+        {
+            // Arrange
+            InitializeMongoRecompenseCollection();
+
+            var dal = new DALRecompense(mongoClient.Object);
+
+            // Act
+            Recompense recompense = recompenseList[0];
+            recompense.Type = TypeRecompense.Reprojection;
+            dal.UpdateItem(recompense);
+
+            // Assert
+            Assert.Equal(recompense, recompenseList.Find(x => x.Id== recompense.Id));
+
+        }
+
+
+        [Fact]
+        public void AbonneAdmissibleRecompense_ReturnTrueIfAbonneDoesntHaveItAlready()
+        {
+            InitializeMongoRecompenseCollection();
+
+            var dal = new DALRecompense(mongoClient.Object);
+
+            Abonne abonne = recompenseList[0].Abonne;
+            Film film = new Film("new film");
+
+            var res = dal.AbonneAdmissibleRecompense(TypeRecompense.Reprojection, abonne, film);
+
+            Assert.True(res);
+
+        }
 
 
 

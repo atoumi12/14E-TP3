@@ -70,7 +70,8 @@ namespace MonCine.Data
 
                 // If does not exists !!
                 var filter = Builders<Recompense>.Filter.Eq(r => r.Id, pRecompense.Id);
-                bool exists = collection.FindSync(filter).ToList().Count > 0;
+                var item = collection.FindSync(filter);
+                bool exists = item != null && item.ToList()?.Count > 0 ;
                 if (!exists)
                 {
                     return AddItem(pRecompense);
@@ -140,7 +141,7 @@ namespace MonCine.Data
 
         public bool AssignerRecompenseAPlusieursAbonnes(Recompense pRecompense, List<Abonne> pAbonne, Film pFilm)
         {
-            bool ajoutRecompense = false;
+            bool ajoutRecompense;
 
 
             foreach (Abonne abo in pAbonne)
@@ -166,7 +167,7 @@ namespace MonCine.Data
             bool admissbile = true;
             recompenses.ForEach(r =>
             {
-                if (r.Type == pTypeRecompense && r.Abonne.Id == pAbonne.Id && r.Film.Id == pFilm.Id)
+                if (r.Type == pTypeRecompense && r.Abonne == pAbonne && r.Film == pFilm)
                 {
                     admissbile = false;
                 }

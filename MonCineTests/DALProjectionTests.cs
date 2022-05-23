@@ -65,10 +65,6 @@ namespace MonCineTests
 
             projectionCollection.Setup(x => x.FindSync(Builders<Projection>.Filter.Empty, It.IsAny<FindOptions<Projection>>(), default)).Returns(projectionCursor.Object);
 
-            // TODO: MOCKKK , verif si appele !!!!
-            //projectionCollection.Setup(x=>x.inse)
-
-
             InitializeMongoDb();
         }
 
