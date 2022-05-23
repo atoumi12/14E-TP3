@@ -138,7 +138,7 @@ namespace MonCine.Data
             if (!DatesProjection.Any() || DatesProjection.Count < 2)
             {
                 // TODO: false, Test : true
-                return false;
+                return true;
             }
 
             DateTime datePremiereProjectioons = DatesProjection.OrderBy(x => x.Date).ToList()[0];

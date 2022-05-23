@@ -75,8 +75,8 @@
 
 
         <!--Avant Premiere-->
-        <GroupBox x:Name="grbAvantPremiere" Header="Avant première" Visibility="visible 
-                  "
+        <GroupBox x:Name="grbAvantPremiere" Header="Avant première" Visibility="Hidden"
+                  FontSize="14" FontWeight="DemiBold"
                   Grid.Row="1" Grid.RowSpan="2" Grid.Column="3">
 
             <StackPanel Orientation="Horizontal">

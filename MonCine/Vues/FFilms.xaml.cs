@@ -168,6 +168,7 @@ namespace MonCine.Vues
                     {
                         MessageBox.Show($"Le film '{updatedFilm.Name}' a été mis à jour avec succès !", "Modification",
                             MessageBoxButton.OK, MessageBoxImage.Information);
+                        NameField.Text = "";
                     }
                 }
             }
