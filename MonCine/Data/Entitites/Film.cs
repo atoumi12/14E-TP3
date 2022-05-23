@@ -122,6 +122,8 @@ namespace MonCine.Data
                 throw new ArgumentNullException("pProjection", "La projection ne peut pas être nulle");
             }
 
+            SurAffiche = true;
+
             if (DatesProjection.Count < 2)
             {
                 DatesProjection.Add(pProjection.DateFin);

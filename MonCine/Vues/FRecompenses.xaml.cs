@@ -45,9 +45,9 @@ namespace MonCine.Vues
 
         private void InitialConfiguration()
         {
-            List<Film> films = _dalFilm.ReadItems().ToList();
-            films = films.Where(f => f.AdmissibleReprojection()).ToList();
-            lstReprojections.ItemsSource = films;
+            List<Film> filmsReprojection = _dalFilm.ReadItems().ToList();
+            filmsReprojection = filmsReprojection.Where(f => f.AdmissibleReprojection()).ToList();
+            lstReprojections.ItemsSource = filmsReprojection;
 
             List<Film> filmsAvantPremiere = _dalFilm.ReadItems().ToList();
             filmsAvantPremiere = filmsAvantPremiere.Where(f => f.AdmissibleAvantPremiere()).ToList();
@@ -164,7 +164,6 @@ namespace MonCine.Vues
         private void lstAvantPremiere_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Film avantPremiere = lstAvantPremiere.SelectedItem as Film;
-            Boolean estValide = false;
 
             abonnes = abonnes.Where(a => a.AdmissibleAbo(avantPremiere)).ToList();
             lstAbonnesAvantPremiere.ItemsSource = abonnes;
@@ -187,20 +186,12 @@ namespace MonCine.Vues
         }
 
 
-        private void lstAbonnesAvantPremiere_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         private void OffirRecompenseAvantPremiere_Click(object sender, RoutedEventArgs e)
 
         {
             abonnes = lstAbonnesAvantPremiere.SelectedItems.OfType<Abonne>().ToList();
-            //foreach (Abonne abonne in lstAbonnesAvantPremiere.SelectedItems.Cast<Abonne>.toList())
-            //{
-            //    lstAbonnes.Add(abonne);
-            //}
-            //lstAbonnes = lstAbonnesAvantPremiere.SelectedItems as List<Abonne>;
+        
             if (abonnes.Count == 0 )
             {
                 MessageBox.Show("Veuillez séléctionnez un abonné", "Récompense", MessageBoxButton.OK,
