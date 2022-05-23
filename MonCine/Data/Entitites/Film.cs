@@ -141,8 +141,8 @@ namespace MonCine.Data
                 return false;
             }
 
-            DateTime dateDerniereProjection = DatesProjection.OrderBy(x => x.Date).ToList()[0];
-            bool b = dateDerniereProjection > DateTime.Now.AddYears(1);
+            DateTime datePremiereProjectioons = DatesProjection.OrderBy(x => x.Date).ToList()[0];
+            bool b = datePremiereProjectioons > DateTime.Now.AddYears(1);
             return b;
         }
 
@@ -160,6 +160,24 @@ namespace MonCine.Data
 
             return exists;
         }
+
+
+
+        public bool AdmissibleAvantPremiere()
+        {
+
+            if(SurAffiche && DatesProjection.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+
+
+
 
 
         public override string ToString()

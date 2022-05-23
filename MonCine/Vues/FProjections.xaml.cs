@@ -88,12 +88,11 @@ namespace MonCine.Vues
                 MessageBox.Show("Veuillez remplir les champs nécéssaires pour créer la projection",
                     "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (dateAnterieure)
-            {
-                MessageBox.Show(
-                    $"Veuillez choisir une date dans le futur pour la projection. \n La date saisie : {DatePickerProjection.SelectedDate.Value.ToShortDateString()} n'est pas valide",
-                    "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            // TODO: ENLEVER LE COMMENTAIRE => VERIFICATION          
+            //else if (dateAnterieure)
+            //{
+            //    MessageBox.Show($"Veuillez choisir une date dans le futur pour la projection. \n La date saisie : {DatePickerProjection.SelectedDate.Value.ToShortDateString()} n'est pas valide", "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //}
             else
             {
                 Projection projection = CreateProjectionToAdd();

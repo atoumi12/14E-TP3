@@ -52,7 +52,7 @@ namespace MonCine.Vues
 
         private void BtnRecompenses_Click(object sender, RoutedEventArgs e)
         {
-            FRecompenses fRecompenses = new FRecompenses(new DALRecompense(), new DALFilm(), new DALAbonne());
+            FRecompenses fRecompenses = new FRecompenses(new DALRecompense(), new DALFilm(), new DALAbonne(), new DALProjection());
             NavigationService?.Navigate(fRecompenses);
         }
 
