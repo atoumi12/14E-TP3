@@ -46,7 +46,7 @@
         </GroupBox>
 
         <GroupBox x:Name="grpSeances" Header="séances" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="3"
-                  FontSize="15" Margin="10,0,0,0" >
+                  FontSize="15" Margin="10,0,0,0" Visibility="Hidden">
 
             <StackPanel Orientation="Vertical" >
                 <StackPanel x:Name="cboBtnReservation" Orientation="Horizontal" Margin="0,0,0,200">
